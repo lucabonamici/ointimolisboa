@@ -867,21 +867,26 @@ a {
     min-height: 100vh;
   }
 
-  /*
-   * On portrait mobile, intro.mp4 is landscape (wider than tall).
-   * Pinning height to the viewport height and leaving width auto causes
-   * the browser to scale the video proportionally — the width overflows
-   * and gets clipped by hero's overflow:hidden, achieving a true cover.
-   * This is more reliable than object-fit:cover on iOS Safari video.
-   */
+  /* Lighten vignette so video shows across the full screen */
+  .hero-vignette {
+    background: radial-gradient(
+      ellipse at 50% 50%,
+      rgba(13, 20, 36, 0.15) 0%,
+      rgba(13, 20, 36, 0.45) 65%,
+      rgba(13, 20, 36, 0.68) 100%
+    );
+  }
+
+  /* Zoom into the warm mid-section of the video, cropping out the dark ceiling */
   .hero-video {
-    inset: auto;
-    top: 50%;
-    left: 50%;
-    width: auto;
-    height: 100vh;
-    min-width: 100vw;
-    transform: translate(-50%, -50%);
+    object-position: center center;
+    transform: scale(1.6);
+    transform-origin: center 60%;
+  }
+
+  /* Reduce top padding so content sits at true center of screen */
+  .hero-content {
+    padding-top: 56px;
   }
 }
 

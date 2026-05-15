@@ -4,6 +4,10 @@
    ========================================================= */
 
 (function () {
+  // Prevent iOS Safari from restoring a previous scroll position on fresh load
+  if (history.scrollRestoration) history.scrollRestoration = "manual";
+  window.scrollTo(0, 0);
+
   const reduceMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
