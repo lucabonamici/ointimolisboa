@@ -1,5 +1,6 @@
 /* =========================================================
-   L'Intime — scroll animations
+   L'Intime — interactions & scroll animations
+   Content is ALWAYS visible. GSAP is progressive enhancement only.
    ========================================================= */
 
 (function () {
@@ -7,28 +8,9 @@
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
-  // ----- Hero video: fade in once it can play -----
-  const heroVideoEl = document.querySelector(".hero-video");
-  if (heroVideoEl) {
-    const reveal = () => heroVideoEl.classList.add("is-ready");
-    if (heroVideoEl.readyState >= 2) {
-      reveal();
-    } else {
-      heroVideoEl.addEventListener("loadeddata", reveal, { once: true });
-      heroVideoEl.addEventListener("canplay", reveal, { once: true });
-    }
-    // try to play (some browsers need a nudge)
-    const tryPlay = heroVideoEl.play();
-    if (tryPlay && typeof tryPlay.catch === "function") {
-      tryPlay.catch(() => {
-        // autoplay blocked — leave the gradient fallback visible
-      });
-    }
-  }
-
-  // ----- Hamburger mobile menu -----
+  /* ── Hamburger mobile menu ── */
   const hamburger = document.getElementById("navHamburger");
-  const navLinks = document.getElementById("navLinks");
+  const navLinks  = document.getElementById("navLinks");
   if (hamburger && navLinks) {
     hamburger.addEventListener("click", () => {
       const isOpen = navLinks.classList.toggle("is-open");
@@ -46,54 +28,128 @@
     });
   }
 
-  // ----- Nav goes solid after scroll -----
+  /* ── Hero video: fade in once playable ── */
+  const heroVideo = document.querySelector(".hero-video");
+  if (heroVideo) {
+    const reveal = () => heroVideo.classList.add("is-ready");
+    if (heroVideo.readyState >= 2) reveal();
+    else {
+      heroVideo.addEventListener("loadeddata", reveal, { once: true });
+      heroVideo.addEventListener("canplay",    reveal, { once: true });
+    }
+    const p = heroVideo.play();
+    if (p && p.catch) p.catch(() => {});
+  }
+
+  /* ── Nav solidifies on scroll ── */
   const nav = document.querySelector(".nav");
-  const onScroll = () => {
-    if (window.scrollY > 40) nav.classList.add("is-solid");
-    else nav.classList.remove("is-solid");
-  };
+  const onScroll = () => nav.classList.toggle("is-solid", window.scrollY > 40);
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  // ----- Book button: placeholder click feedback -----
+  /* ── Book button placeholder ── */
   const bookBtn = document.getElementById("bookBtn");
   if (bookBtn) {
     bookBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      bookBtn.querySelector("span").textContent = "Booking opens soon";
+      const span = bookBtn.querySelector("span");
+      span.textContent = "Booking opens soon";
       bookBtn.style.pointerEvents = "none";
       setTimeout(() => {
-        bookBtn.querySelector("span").textContent = "Reserve your seat";
+        span.textContent = "Reserve your seat";
         bookBtn.style.pointerEvents = "";
       }, 2400);
     });
   }
 
+  /* ── GSAP guard: if missing or reduced motion, all content stays visible ── */
   if (reduceMotion || typeof gsap === "undefined") return;
 
   gsap.registerPlugin(ScrollTrigger);
 
-  /* -----------------------------------------------------
-     Prepare stroke-based draw-on for every SVG doodle.
-     We measure each path/line/circle/ellipse and set its
-     dasharray to its own length, dashoffset to that length,
-     then animate dashoffset to 0 on scroll.
-     ----------------------------------------------------- */
-  const prepareStrokes = (root) => {
-    const els = root.querySelectorAll("path, line, circle, ellipse");
-    els.forEach((el) => {
-      let len = 0;
-      try {
-        len = el.getTotalLength
-          ? el.getTotalLength()
-          : el.getBoundingClientRect().width * 2;
-      } catch (_) {
-        len = 200;
+  /* ──────────────────────────────────────────────────────
+     IMPORTANT: Never use gsap.set() to hide content.
+     All text/heading elements must remain visible if the
+     ticker stalls (low-power mobile, background tab).
+     Use gsap.from() which is lazy — the FROM state only
+     applies on the first tick. If no tick ever fires the
+     element stays at its natural CSS value (visible).
+  ────────────────────────────────────────────────────── */
+
+  /* ── Hero entrance ── */
+  const eqLines = document.querySelectorAll(".logo-mark line");
+
+  const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+  // Equalizer bars — purely decorative, ok to animate from hidden
+  heroTl.fromTo(
+    eqLines,
+    { scaleY: 0, transformOrigin: "center center" },
+    { scaleY: 1, duration: 0.7, stagger: { each: 0.035, from: "center" }, ease: "back.out(1.4)" }
+  );
+
+  // Text — from() is lazy: if ticker stalls before first tick, element is visible
+  heroTl
+    .from(".logo-text",       { opacity: 0, y: 16, duration: 0.8, clearProps: "all" }, "-=0.25")
+    .from(".logo-sub",        { opacity: 0, y: 10, duration: 0.6, clearProps: "all" }, "-=0.45")
+    .from(".hero-handwritten",{ opacity: 0, y: 12, duration: 0.8, clearProps: "all" }, "-=0.3");
+
+  // Equalizer idle motion kicks in after entrance
+  heroTl.add(() => {
+    eqLines.forEach((line, i) => {
+      gsap.to(line, {
+        scaleY: () => 0.55 + Math.random() * 0.65,
+        duration: 0.7 + Math.random() * 0.6,
+        repeat: -1, yoyo: true,
+        ease: "sine.inOut",
+        delay: i * 0.025,
+      });
+    });
+  });
+
+  /* Safety net — if ticker stalled and from() left elements invisible, reveal after 2.5s */
+  setTimeout(() => {
+    [".logo-text", ".logo-sub", ".hero-handwritten"].forEach((sel) => {
+      const el = document.querySelector(sel);
+      if (el && parseFloat(window.getComputedStyle(el).opacity) < 0.5) {
+        gsap.set(el, { opacity: 1, y: 0, clearProps: "all" });
       }
+    });
+  }, 2500);
+
+  /* ── Hero parallax ── */
+  gsap.to(".hero-content", {
+    yPercent: -10, opacity: 0.45, ease: "none",
+    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.6 },
+  });
+  gsap.to(".hero-video", {
+    yPercent: 8, scale: 1.04, ease: "none",
+    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.6 },
+  });
+
+  /* ── About: subtle slide only — no opacity gating ── */
+  // Opacity is NOT touched here so text is always readable
+  gsap.from(".about-text .eyebrow", {
+    y: 18, duration: 0.8, ease: "power2.out",
+    scrollTrigger: { trigger: ".about-text", start: "top 82%" },
+  });
+  gsap.from(".about-text h2", {
+    y: 24, duration: 0.95, ease: "power2.out",
+    scrollTrigger: { trigger: ".about-text", start: "top 78%" },
+  });
+  gsap.from(".about-text .lede", {
+    y: 16, duration: 0.8, stagger: 0.1, ease: "power2.out",
+    scrollTrigger: { trigger: ".about-text", start: "top 72%" },
+  });
+
+  /* ── Doodle draw-on (decorative SVGs — safe to animate from hidden) ── */
+  const prepareStrokes = (root) => {
+    root.querySelectorAll("path, line, circle, ellipse").forEach((el) => {
+      let len = 200;
+      try { len = el.getTotalLength ? el.getTotalLength() : len; } catch (_) {}
       if (!len || !isFinite(len)) len = 200;
-      el.style.strokeDasharray = len;
+      el.style.strokeDasharray  = len;
       el.style.strokeDashoffset = len;
-      el._drawLen = len;
     });
   };
 
@@ -101,302 +157,69 @@
     const root = document.querySelector(selector);
     if (!root) return;
     prepareStrokes(root);
-    const els = root.querySelectorAll("path, line, circle, ellipse");
-    // Scroll-linked: the drawing is *driven* by scroll position,
-    // so each pixel of scroll continues the line.
-    gsap.to(els, {
+    gsap.to(root.querySelectorAll("path, line, circle, ellipse"), {
       strokeDashoffset: 0,
       ease: "none",
-      stagger: opts.stagger || 0.06,
+      stagger: opts.stagger || 0.05,
       scrollTrigger: {
         trigger: opts.trigger || root,
-        start: opts.start || "top 90%",
-        end: opts.end || "top 35%",
-        scrub: opts.scrub != null ? opts.scrub : 0.8,
+        start:   opts.start  || "top 90%",
+        end:     opts.end    || "top 35%",
+        scrub:   opts.scrub  != null ? opts.scrub : 0.8,
       },
     });
   };
 
-  /* ----- Hero entrance ----- */
-  const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+  drawOnScroll(".doodle-lamp",   { trigger: ".about", start: "top 75%", end: "center 40%", stagger: 0.05 });
+  drawOnScroll(".doodle-guitar", { trigger: ".about", start: "top 65%", end: "center 30%", stagger: 0.04 });
+  drawOnScroll(".doodle-notes",  { trigger: ".about", start: "top 55%", end: "center 20%", stagger: 0.06 });
 
-  // Animate equalizer bars: each line scales vertically from 0 then settles.
-  const eqLines = document.querySelectorAll(".logo-mark line");
-  gsap.set(eqLines, { transformOrigin: "center center", scaleY: 0 });
-  heroTl.to(eqLines, {
-    scaleY: 1,
-    duration: 0.8,
-    stagger: { each: 0.04, from: "center" },
-    ease: "back.out(1.6)",
+  /* Doodle idle animations — start after draw completes */
+  ScrollTrigger.create({ trigger: ".doodle-lamp", start: "top 80%", once: true,
+    onEnter: () => gsap.to(".doodle-lamp", { rotation: 3, transformOrigin: "70px 0px", duration: 3.6, repeat: -1, yoyo: true, ease: "sine.inOut" }),
   });
-
-  // Logo text + sub
-  gsap.set([".logo-text", ".logo-sub", ".hero-handwritten"], {
-    opacity: 0,
-    y: 18,
+  ScrollTrigger.create({ trigger: ".doodle-guitar", start: "top 80%", once: true,
+    onEnter: () => gsap.to(".doodle-guitar", { y: -10, rotation: -1.5, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" }),
   });
-  heroTl
-    .to(".logo-text", { opacity: 1, y: 0, duration: 0.9 }, "-=0.3")
-    .to(".logo-sub", { opacity: 1, y: 0, duration: 0.7 }, "-=0.5")
-    .to(".hero-handwritten", { opacity: 0.95, y: 0, duration: 0.9 }, "-=0.3");
-
-  // Equalizer idle motion after entrance
-  heroTl.add(() => {
-    eqLines.forEach((line, i) => {
-      gsap.to(line, {
-        scaleY: () => 0.6 + Math.random() * 0.6,
-        duration: 0.8 + Math.random() * 0.6,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: i * 0.03,
-      });
-    });
+  ScrollTrigger.create({ trigger: ".doodle-notes", start: "top 80%", once: true,
+    onEnter: () => gsap.to(".doodle-notes", { x: 6, y: -6, duration: 5, repeat: -1, yoyo: true, ease: "sine.inOut" }),
   });
 
-  /* ----- Hero parallax on scroll ----- */
-  gsap.to(".hero-content", {
-    yPercent: -12,
-    opacity: 0.4,
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".hero",
-      start: "top top",
-      end: "bottom top",
-      scrub: 0.6,
-    },
-  });
+  /* Doodle parallax */
+  gsap.to(".doodle-lamp",   { yPercent: -22, ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: 0.8 } });
+  gsap.to(".doodle-guitar", { yPercent:  16, ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: 0.8 } });
+  gsap.to(".doodle-notes",  { yPercent: -10, xPercent: 5,  ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: 0.8 } });
 
-  gsap.to(".hero-video", {
-    yPercent: 8,
-    scale: 1.04,
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".hero",
-      start: "top top",
-      end: "bottom top",
-      scrub: 0.6,
-    },
-  });
-
-  /* ----- About text reveal ----- */
-  gsap.from(".about-text > *", {
-    opacity: 0,
-    y: 28,
-    duration: 1,
-    stagger: 0.12,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: ".about",
-      start: "top 70%",
-    },
-  });
-
-  /* ----- Doodles: draw on scroll (linked to scroll position) ----- */
-  // Use the whole .about section as the trigger so all three doodles
-  // share the same scroll window and draw together as the user
-  // scrolls through this section.
-  drawOnScroll(".doodle-lamp", {
-    trigger: ".about",
-    start: "top 75%",
-    end: "center 40%",
-    stagger: 0.05,
-  });
-  drawOnScroll(".doodle-guitar", {
-    trigger: ".about",
-    start: "top 65%",
-    end: "center 30%",
-    stagger: 0.04,
-  });
-  drawOnScroll(".doodle-notes", {
-    trigger: ".about",
-    start: "top 55%",
-    end: "center 20%",
-    stagger: 0.06,
-  });
-
-  /* ----- Doodle idle motion: sway & float ----- */
-  // Lamp sways gently around its cord pivot
-  ScrollTrigger.create({
-    trigger: ".doodle-lamp",
-    start: "top 80%",
-    once: true,
-    onEnter: () => {
-      gsap.to(".doodle-lamp", {
-        rotation: 3,
-        transformOrigin: "70px 0px",
-        duration: 3.6,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-    },
-  });
-
-  // Guitar floats vertically
-  ScrollTrigger.create({
-    trigger: ".doodle-guitar",
-    start: "top 80%",
-    once: true,
-    onEnter: () => {
-      gsap.to(".doodle-guitar", {
-        y: -10,
-        rotation: -1.5,
-        duration: 4,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-    },
-  });
-
-  // Notes drift
-  ScrollTrigger.create({
-    trigger: ".doodle-notes",
-    start: "top 80%",
-    once: true,
-    onEnter: () => {
-      gsap.to(".doodle-notes", {
-        x: 6,
-        y: -6,
-        duration: 5,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-    },
-  });
-
-  // Parallax drift on the whole doodle column while scrolling through "about"
-  gsap.to(".doodle-lamp", {
-    yPercent: -25,
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".about",
-      start: "top bottom",
-      end: "bottom top",
-      scrub: 0.8,
-    },
-  });
-  gsap.to(".doodle-guitar", {
-    yPercent: 18,
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".about",
-      start: "top bottom",
-      end: "bottom top",
-      scrub: 0.8,
-    },
-  });
-  gsap.to(".doodle-notes", {
-    yPercent: -12,
-    xPercent: 6,
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".about",
-      start: "top bottom",
-      end: "bottom top",
-      scrub: 0.8,
-    },
-  });
-
-  /* ----- Event card reveal ----- */
+  /* ── Event section: slide only ── */
   gsap.from(".event .eyebrow, .event h2", {
-    opacity: 0,
-    y: 24,
-    duration: 0.9,
-    stagger: 0.1,
-    ease: "power2.out",
-    scrollTrigger: { trigger: ".event", start: "top 70%" },
+    y: 20, duration: 0.8, stagger: 0.08, ease: "power2.out",
+    scrollTrigger: { trigger: ".event", start: "top 78%" },
   });
-
   gsap.from(".event-card", {
-    opacity: 0,
-    y: 40,
-    duration: 1.1,
-    ease: "power3.out",
-    scrollTrigger: { trigger: ".event-card", start: "top 80%" },
+    y: 30, duration: 1, ease: "power3.out",
+    scrollTrigger: { trigger: ".event-card", start: "top 85%" },
   });
 
-  gsap.from(".event-date-block > *", {
-    opacity: 0,
-    y: 16,
-    duration: 0.7,
-    stagger: 0.08,
-    ease: "power2.out",
-    scrollTrigger: { trigger: ".event-card", start: "top 75%" },
-    delay: 0.3,
-  });
-
-  gsap.from(".event-meta > *", {
-    opacity: 0,
-    x: 24,
-    duration: 0.8,
-    stagger: 0.08,
-    ease: "power2.out",
-    scrollTrigger: { trigger: ".event-card", start: "top 75%" },
-    delay: 0.4,
-  });
-
-  /* ----- Book section ----- */
+  /* ── Book section ── */
   gsap.from(".book .eyebrow, .book h2, .book-lede", {
-    opacity: 0,
-    y: 24,
-    duration: 0.9,
-    stagger: 0.1,
-    ease: "power2.out",
-    scrollTrigger: { trigger: ".book", start: "top 70%" },
+    y: 18, duration: 0.8, stagger: 0.08, ease: "power2.out",
+    scrollTrigger: { trigger: ".book", start: "top 78%" },
   });
-
-  // Chair draws on scroll, linked to its own position
-  drawOnScroll(".doodle-chair", {
-    start: "top 95%",
-    end: "top 40%",
-    stagger: 0.04,
-  });
-
-  // Chair gentle bob
-  ScrollTrigger.create({
-    trigger: ".doodle-chair",
-    start: "top 85%",
-    once: true,
-    onEnter: () => {
-      gsap.to(".doodle-chair", {
-        y: -6,
-        rotation: 1.5,
-        transformOrigin: "center bottom",
-        duration: 4.2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-    },
-  });
-
   gsap.from(".book-btn", {
-    opacity: 0,
-    y: 16,
-    duration: 0.9,
-    ease: "power2.out",
-    scrollTrigger: { trigger: ".book-btn", start: "top 85%" },
-    delay: 0.2,
+    y: 14, duration: 0.8, ease: "power2.out",
+    scrollTrigger: { trigger: ".book-btn", start: "top 88%" },
   });
 
-  gsap.from(".book-foot", {
-    opacity: 0,
-    y: 12,
-    duration: 0.8,
-    ease: "power2.out",
-    scrollTrigger: { trigger: ".book-foot", start: "top 90%" },
+  /* Chair: draw on scroll */
+  drawOnScroll(".doodle-chair", { start: "top 95%", end: "top 45%", stagger: 0.04 });
+  ScrollTrigger.create({ trigger: ".doodle-chair", start: "top 85%", once: true,
+    onEnter: () => gsap.to(".doodle-chair", { y: -6, rotation: 1.5, transformOrigin: "center bottom", duration: 4.2, repeat: -1, yoyo: true, ease: "sine.inOut" }),
   });
 
-  /* ----- Footer reveal ----- */
+  /* ── Footer ── */
   gsap.from(".footer-content > *", {
-    opacity: 0,
-    y: 16,
-    duration: 0.8,
-    stagger: 0.12,
-    ease: "power2.out",
+    y: 14, duration: 0.8, stagger: 0.1, ease: "power2.out",
     scrollTrigger: { trigger: ".footer", start: "top 90%" },
   });
+
 })();

@@ -802,74 +802,84 @@ a {
 }
 
 /* =========================================================
-   ANIMATION-READY STATES
-   GSAP will animate these; CSS provides the start states
-   so the page is never empty if JS is slow.
+   HERO ENTRANCE — CSS animations run independently of GSAP.
+   They guarantee the hero is readable even if JS/GSAP stalls.
+   GSAP will override these with its own tweens when it runs;
+   clearProps:"all" then hands control back to CSS.
    ========================================================= */
 
-/* draw-on for stroked SVG: prepared in JS at load */
-.draw-ready path,
-.draw-ready line,
-.draw-ready circle,
-.draw-ready ellipse {
-  stroke-dasharray: var(--len, 1);
-  stroke-dashoffset: var(--len, 1);
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* fade/slide reveal */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
+@keyframes heroFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* gentle floating idle anim, kicked off after draw */
-@keyframes sway {
-  0%, 100% { transform: rotate(-2deg); }
-  50% { transform: rotate(2deg); }
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0);  opacity: 0.7; }
+  50%       { transform: translateY(6px); opacity: 1; }
 }
 
-@keyframes float-y {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+/* Logo mark fades in */
+.logo-mark {
+  animation: heroFadeIn 0.7s ease-out 0.2s both;
 }
 
-@keyframes scroll-bounce {
-  0%, 100% { transform: translateY(0); opacity: 0.7; }
-  50% { transform: translateY(6px); opacity: 1; }
+/* Main title */
+.logo-text {
+  animation: heroFadeUp 0.9s ease-out 0.45s both;
+}
+
+/* Subtitle */
+.logo-sub {
+  animation: heroFadeUp 0.7s ease-out 0.65s both;
+}
+
+/* Handwritten tagline */
+.hero-handwritten {
+  animation: heroFadeUp 0.9s ease-out 0.85s both;
 }
 
 .scroll-hint svg {
-  animation: scroll-bounce 1.8s ease-in-out infinite;
+  animation: scrollBounce 1.8s ease-in-out infinite;
 }
 
 /* =========================================================
    MOBILE RESPONSIVE
    ========================================================= */
 
-/* ---- Hero: iOS Safari viewport fix ---- */
+/* ---- Hero: iOS Safari true-viewport fix ---- */
 @supports (min-height: 100svh) {
   .hero { min-height: 100svh; }
 }
 
-/* ---- Tablet (≤860px) — already handled by grid break ---- */
+/* =========================================================
+   RESPONSIVE — mobile-first overrides
+   ========================================================= */
 
-/* ---- Phablet / large phone (≤640px) ---- */
-@media (max-width: 640px) {
+/* ---- Tablet / large phone (≤860px) — grid already breaks ---- */
+@media (max-width: 860px) {
   .about {
-    padding: 70px 24px;
+    padding: clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px);
   }
+}
 
+/* ---- Phablet (≤640px) ---- */
+@media (max-width: 640px) {
   .event {
-    padding: 70px 24px;
+    padding: 64px 24px;
   }
 
   .event h2,
   .book h2 {
-    margin-bottom: 36px;
+    margin-bottom: 28px;
   }
 
   .event-card {
-    padding: 28px 20px;
+    padding: 24px 20px;
     gap: 0;
   }
 
@@ -879,57 +889,64 @@ a {
   }
 
   .event-meta {
-    padding: 20px 4px 4px;
+    padding: 20px 4px 8px;
+  }
+
+  .about-doodles {
+    min-height: 320px;
   }
 }
 
 /* ---- Phone (≤480px) ---- */
 @media (max-width: 480px) {
 
-  /* Nav: brand slightly smaller */
+  /* --- Nav --- */
   .nav {
-    padding: 16px 20px;
+    padding: 14px 20px;
   }
   .nav-brand {
-    font-size: 19px;
+    font-size: 18px;
   }
 
-  /* Hero */
+  /* --- Hero --- */
   .hero-content {
-    padding: 90px 20px 56px;
+    padding: 88px 24px 56px;
   }
 
   .logo-mark {
-    width: 140px;
+    width: clamp(100px, 36vw, 150px);
   }
 
   .logo-text {
-    font-size: 58px;
+    font-size: clamp(48px, 14vw, 68px);
   }
 
   .logo-sub {
     font-size: 10px;
-    letter-spacing: 0.35em;
-    padding-left: 0.35em;
+    letter-spacing: 0.32em;
+    padding-left: 0.32em;
+    margin-top: 10px;
   }
 
   .hero-handwritten {
-    font-size: 20px;
-    margin-top: 24px;
+    font-size: clamp(18px, 5.5vw, 24px);
+    margin-top: 20px;
   }
 
   .scroll-hint {
-    bottom: 20px;
+    bottom: 18px;
     font-size: 9px;
+    letter-spacing: 0.3em;
   }
 
-  /* About */
+  /* --- About --- */
   .about {
-    padding: 56px 20px;
+    padding: 52px 22px 60px;
   }
 
   .about-text h2 {
-    font-size: 30px;
+    font-size: clamp(26px, 7.5vw, 34px);
+    margin-bottom: 20px;
   }
 
   .lede {
@@ -937,112 +954,117 @@ a {
     max-width: 100%;
   }
 
-  /* Doodles: taller container + slight rescale so guitar fits */
   .about-doodles {
-    min-height: 340px;
+    min-height: 360px;
     max-width: 100%;
+    margin-top: 16px;
+  }
+
+  /* Keep guitar from being clipped */
+  .doodle-guitar {
+    top: 6%;
+    right: 2%;
+    width: 38%;
   }
 
   .doodle-lamp {
-    width: 42%;
-    left: 4%;
-  }
-
-  .doodle-guitar {
-    width: 36%;
-    top: 8%;
-    right: 3%;
+    width: 44%;
+    left: 2%;
   }
 
   .doodle-notes {
-    width: 58%;
-    left: 12%;
-    bottom: 2%;
+    width: 60%;
+    left: 10%;
+    bottom: 0;
   }
 
-  /* Event */
+  /* --- Event --- */
   .event {
-    padding: 56px 20px;
+    padding: 52px 22px;
   }
 
   .event h2 {
-    font-size: 38px;
-    margin-bottom: 28px;
+    font-size: clamp(32px, 9vw, 44px);
+    margin-bottom: 24px;
   }
 
   .event-card {
-    padding: 24px 16px;
+    padding: 22px 16px;
   }
 
   .event-day {
-    font-size: 52px;
+    font-size: clamp(48px, 14vw, 64px);
   }
 
   .event-artist {
-    font-size: 26px;
+    font-size: clamp(22px, 6vw, 28px);
   }
 
   .event-detail {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .event-handwritten {
     font-size: 20px;
+    margin-top: 12px;
   }
 
-  /* Book */
+  /* --- Book --- */
   .book {
-    padding: 52px 20px 44px;
+    padding: 48px 22px 40px;
   }
 
   .book h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
+    font-size: clamp(28px, 8.5vw, 40px);
+    margin-bottom: 16px;
   }
 
   .book-lede {
     font-size: 14px;
     max-width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
-  /* Full-width button on phone */
   .book-btn {
     width: 100%;
     justify-content: center;
-    letter-spacing: 0.18em;
-    padding: 16px 20px;
+    letter-spacing: 0.15em;
+    padding: 17px 20px;
     font-size: 12px;
   }
 
   .book-foot {
     font-size: 16px;
-    margin-top: 16px;
+    margin-top: 14px;
   }
 
   .doodle-chair {
-    width: 130px;
-    margin-top: 24px;
+    width: clamp(100px, 28vw, 140px);
+    margin-top: 20px;
   }
 
-  /* Footer */
+  /* --- Footer --- */
   .footer {
-    padding: 40px 20px 32px;
+    padding: 40px 22px 32px;
+  }
+
+  .footer-mark {
+    font-size: 20px;
   }
 }
 
 /* ---- Very small phone (≤360px) ---- */
 @media (max-width: 360px) {
   .logo-text {
-    font-size: 48px;
+    font-size: 44px;
   }
 
   .logo-mark {
-    width: 120px;
+    width: 110px;
   }
 
   .hero-handwritten {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .about-doodles {
@@ -1050,8 +1072,12 @@ a {
   }
 
   .doodle-guitar {
-    width: 32%;
-    top: 12%;
+    width: 34%;
+    top: 10%;
+  }
+
+  .event-day {
+    font-size: 46px;
   }
 }
 
