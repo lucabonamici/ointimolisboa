@@ -114,9 +114,73 @@ a {
   border-bottom-color: rgba(247, 215, 162, 0.5);
 }
 
-@media (max-width: 540px) {
-  .nav-links a:not(:last-child) {
+/* Hamburger button — hidden on desktop */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 4px;
+  z-index: 60;
+  flex-shrink: 0;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--cream);
+  border-radius: 2px;
+  transition: transform 0.35s var(--ease-soft), opacity 0.25s ease;
+  transform-origin: center;
+}
+
+/* X when open */
+.nav-hamburger.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-hamburger.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+@media (max-width: 640px) {
+  .nav-hamburger {
+    display: flex;
+  }
+
+  .nav-links {
     display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(22, 32, 58, 0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    z-index: 45;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-links.is-open {
+    display: flex;
+    opacity: 1;
+  }
+
+  .nav-links a {
+    font-size: 28px;
+    font-family: var(--serif);
+    letter-spacing: 0.08em;
+    text-transform: none;
+    opacity: 0.9;
+    border-bottom: none;
+  }
+
+  .nav-links a:hover {
+    opacity: 1;
+    border-bottom: none;
   }
 }
 
@@ -776,6 +840,219 @@ a {
 
 .scroll-hint svg {
   animation: scroll-bounce 1.8s ease-in-out infinite;
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE
+   ========================================================= */
+
+/* ---- Hero: iOS Safari viewport fix ---- */
+@supports (min-height: 100svh) {
+  .hero { min-height: 100svh; }
+}
+
+/* ---- Tablet (≤860px) — already handled by grid break ---- */
+
+/* ---- Phablet / large phone (≤640px) ---- */
+@media (max-width: 640px) {
+  .about {
+    padding: 70px 24px;
+  }
+
+  .event {
+    padding: 70px 24px;
+  }
+
+  .event h2,
+  .book h2 {
+    margin-bottom: 36px;
+  }
+
+  .event-card {
+    padding: 28px 20px;
+    gap: 0;
+  }
+
+  .event-date-block {
+    padding: 16px 20px 20px;
+    min-width: unset;
+  }
+
+  .event-meta {
+    padding: 20px 4px 4px;
+  }
+}
+
+/* ---- Phone (≤480px) ---- */
+@media (max-width: 480px) {
+
+  /* Nav: brand slightly smaller */
+  .nav {
+    padding: 16px 20px;
+  }
+  .nav-brand {
+    font-size: 19px;
+  }
+
+  /* Hero */
+  .hero-content {
+    padding: 90px 20px 56px;
+  }
+
+  .logo-mark {
+    width: 140px;
+  }
+
+  .logo-text {
+    font-size: 58px;
+  }
+
+  .logo-sub {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    padding-left: 0.35em;
+  }
+
+  .hero-handwritten {
+    font-size: 20px;
+    margin-top: 24px;
+  }
+
+  .scroll-hint {
+    bottom: 20px;
+    font-size: 9px;
+  }
+
+  /* About */
+  .about {
+    padding: 56px 20px;
+  }
+
+  .about-text h2 {
+    font-size: 30px;
+  }
+
+  .lede {
+    font-size: 15px;
+    max-width: 100%;
+  }
+
+  /* Doodles: taller container + slight rescale so guitar fits */
+  .about-doodles {
+    min-height: 340px;
+    max-width: 100%;
+  }
+
+  .doodle-lamp {
+    width: 42%;
+    left: 4%;
+  }
+
+  .doodle-guitar {
+    width: 36%;
+    top: 8%;
+    right: 3%;
+  }
+
+  .doodle-notes {
+    width: 58%;
+    left: 12%;
+    bottom: 2%;
+  }
+
+  /* Event */
+  .event {
+    padding: 56px 20px;
+  }
+
+  .event h2 {
+    font-size: 38px;
+    margin-bottom: 28px;
+  }
+
+  .event-card {
+    padding: 24px 16px;
+  }
+
+  .event-day {
+    font-size: 52px;
+  }
+
+  .event-artist {
+    font-size: 26px;
+  }
+
+  .event-detail {
+    font-size: 14px;
+  }
+
+  .event-handwritten {
+    font-size: 20px;
+  }
+
+  /* Book */
+  .book {
+    padding: 52px 20px 44px;
+  }
+
+  .book h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+
+  .book-lede {
+    font-size: 14px;
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+
+  /* Full-width button on phone */
+  .book-btn {
+    width: 100%;
+    justify-content: center;
+    letter-spacing: 0.18em;
+    padding: 16px 20px;
+    font-size: 12px;
+  }
+
+  .book-foot {
+    font-size: 16px;
+    margin-top: 16px;
+  }
+
+  .doodle-chair {
+    width: 130px;
+    margin-top: 24px;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 40px 20px 32px;
+  }
+}
+
+/* ---- Very small phone (≤360px) ---- */
+@media (max-width: 360px) {
+  .logo-text {
+    font-size: 48px;
+  }
+
+  .logo-mark {
+    width: 120px;
+  }
+
+  .hero-handwritten {
+    font-size: 18px;
+  }
+
+  .about-doodles {
+    min-height: 300px;
+  }
+
+  .doodle-guitar {
+    width: 32%;
+    top: 12%;
+  }
 }
 
 /* reduced motion */

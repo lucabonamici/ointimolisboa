@@ -26,6 +26,26 @@
     }
   }
 
+  // ----- Hamburger mobile menu -----
+  const hamburger = document.getElementById("navHamburger");
+  const navLinks = document.getElementById("navLinks");
+  if (hamburger && navLinks) {
+    hamburger.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("is-open");
+      hamburger.classList.toggle("is-open", isOpen);
+      hamburger.setAttribute("aria-expanded", String(isOpen));
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    });
+    navLinks.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => {
+        navLinks.classList.remove("is-open");
+        hamburger.classList.remove("is-open");
+        hamburger.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+      });
+    });
+  }
+
   // ----- Nav goes solid after scroll -----
   const nav = document.querySelector(".nav");
   const onScroll = () => {
