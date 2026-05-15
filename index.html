@@ -254,30 +254,91 @@
         <p class="eyebrow center">The Next Session</p>
         <h2 class="center">Next Event</h2>
 
-        <div class="event-card">
-          <div class="event-date-block">
-            <span class="event-day">14</span>
-            <span class="event-month">June</span>
-            <span class="event-year">2026</span>
-          </div>
+        <div class="event-stack">
+          <!-- Back card — layered poster / printed invitation effect -->
+          <div class="event-card-back" aria-hidden="true"></div>
 
-          <div class="event-meta">
-            <p class="event-artist-eyebrow">Featuring</p>
-            <h3 class="event-artist">Camille &amp; the Lamps</h3>
-            <p class="event-detail">
-              Doors <strong>19:30</strong> &nbsp;·&nbsp; Set begins
-              <strong>20:30</strong>
-            </p>
-            <p class="event-detail">
-              The Living Room &nbsp;·&nbsp; <em>address shared after booking</em>
-            </p>
-            <p class="event-handwritten">
-              <span class="chev">&laquo;</span> only 14 seats
-              <span class="chev">&raquo;</span>
-            </p>
+          <div class="event-card">
+            <div class="event-date-block">
+              <span class="event-day">14</span>
+              <span class="event-month">June</span>
+              <span class="event-year">2026</span>
+            </div>
+
+            <div class="event-meta">
+              <p class="event-artist-eyebrow">Featuring</p>
+              <h3 class="event-artist">Camille &amp; the Lamps</h3>
+              <p class="event-detail">
+                Doors <strong>19:30</strong> &nbsp;·&nbsp; Set begins
+                <strong>20:30</strong>
+              </p>
+              <p class="event-detail">
+                The Living Room &nbsp;·&nbsp; <em>address shared after booking</em>
+              </p>
+              <p class="event-handwritten">
+                <span class="chev">&laquo;</span> only 14 seats
+                <span class="chev">&raquo;</span>
+              </p>
+            </div>
+
+            <!-- Live countdown strip — spans both columns -->
+            <div class="event-countdown" id="eventCountdown">
+              <div class="cd-block">
+                <span class="cd-num" id="cdDays">30</span>
+                <span class="cd-label">days</span>
+              </div>
+              <span class="cd-sep">&middot;</span>
+              <div class="cd-block">
+                <span class="cd-num" id="cdHours">00</span>
+                <span class="cd-label">hrs</span>
+              </div>
+              <span class="cd-sep">&middot;</span>
+              <div class="cd-block">
+                <span class="cd-num" id="cdMins">00</span>
+                <span class="cd-label">min</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- Microphone doodle — draws on scroll -->
+      <svg
+        class="doodle doodle-mic"
+        viewBox="0 0 80 200"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g
+          fill="none"
+          stroke="#F7D7A2"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <!-- capsule -->
+          <ellipse cx="40" cy="38" rx="20" ry="26" />
+          <!-- grill lines -->
+          <path d="M23 24 C 30 20, 50 20, 57 24" />
+          <path d="M20 32 L 60 32" />
+          <path d="M20 40 L 60 40" />
+          <path d="M20 48 L 60 48" />
+          <path d="M23 54 C 30 58, 50 58, 57 54" />
+          <!-- collar rings -->
+          <path d="M24 64 L 56 64" />
+          <path d="M26 70 L 54 70" />
+          <!-- handle body -->
+          <path d="M26 70 L 24 148" />
+          <path d="M54 70 L 56 148" />
+          <!-- handle bottom -->
+          <path d="M24 148 C 30 155, 50 155, 56 148" />
+          <!-- grip lines -->
+          <path d="M25 90 L 55 90" />
+          <path d="M25 106 L 55 106" />
+          <path d="M25 122 L 55 122" />
+          <path d="M25 138 L 55 138" />
+        </g>
+      </svg>
     </section>
 
     <!-- ============ BOOK A SEAT ============ -->

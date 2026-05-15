@@ -401,6 +401,84 @@ a {
   margin: 0 0 18px;
 }
 
+/* ── Event stack: layered poster / printed invitation effect ── */
+.event-stack {
+  position: relative;
+}
+
+.event-card-back {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(247, 215, 162, 0.13);
+  border-radius: 2px;
+  background: linear-gradient(
+    140deg,
+    rgba(247, 215, 162, 0.04) 0%,
+    transparent 55%
+  );
+  transform: rotate(-2.8deg) translateX(-5px) translateY(6px);
+}
+
+/* ── Countdown strip ── */
+.event-countdown {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 3vw, 32px);
+  padding-top: 18px;
+  margin-top: 10px;
+  border-top: 1px solid rgba(247, 215, 162, 0.15);
+}
+
+.cd-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.cd-num {
+  font-family: var(--serif);
+  font-size: clamp(28px, 3.8vw, 44px);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1;
+  letter-spacing: 0.03em;
+  min-width: 2ch;
+  text-align: center;
+}
+
+.cd-label {
+  font-family: var(--sans);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.38em;
+  color: var(--cream-dim);
+  opacity: 0.85;
+  padding-left: 0.38em;
+}
+
+.cd-sep {
+  font-size: 20px;
+  color: var(--cream-dim);
+  opacity: 0.45;
+  margin-bottom: 16px;
+}
+
+/* ── Microphone doodle ── */
+.doodle-mic {
+  width: clamp(52px, 6.5vw, 82px);
+  top: 50%;
+  right: clamp(16px, 4.5vw, 64px);
+  transform: translateY(-38%);
+  opacity: 0.72;
+}
+
+@media (max-width: 860px) {
+  .doodle-mic { display: none; }
+}
+
 /* doodles */
 .about-doodles {
   position: relative;
@@ -434,6 +512,10 @@ a {
 .doodle-notes line,
 .doodle-notes circle,
 .doodle-notes ellipse,
+.doodle-mic path,
+.doodle-mic line,
+.doodle-mic circle,
+.doodle-mic ellipse,
 .doodle-chair path,
 .doodle-chair line,
 .doodle-chair circle,
