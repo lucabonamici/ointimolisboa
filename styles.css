@@ -548,11 +548,6 @@ a {
     text-align: center;
   }
 
-  /* Hide video on phones — landscape video fills portrait badly; gradient shows instead */
-  .hero-video {
-    display: none;
-  }
-
   .about-doodles {
     min-height: 240px;
   }
