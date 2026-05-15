@@ -866,6 +866,20 @@ a {
     height: 100vh;
     min-height: 100vh;
   }
+
+  /* object-fit: cover on <video> is unreliable on iOS Safari — the video
+     renders letterboxed instead of filling the container. Use the
+     min-width/min-height + translate centering approach instead. */
+  .hero-video {
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    height: auto;
+    min-width: 100vw;
+    min-height: 100vh;
+    transform: translate(-50%, -50%);
+  }
 }
 
 @supports (height: 100svh) {
@@ -873,6 +887,21 @@ a {
     .hero {
       height: 100svh;
       min-height: 100svh;
+    }
+    .hero-video {
+      min-height: 100svh;
+    }
+  }
+}
+
+@supports (height: 100dvh) {
+  @media (max-width: 640px) {
+    .hero {
+      height: 100dvh;
+      min-height: 100dvh;
+    }
+    .hero-video {
+      min-height: 100dvh;
     }
   }
 }
