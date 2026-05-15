@@ -51,29 +51,6 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  /* ── Live countdown to June 14 2026 20:30 ── */
-  (function () {
-    const target  = new Date("2026-06-14T20:30:00");
-    const elDays  = document.getElementById("cdDays");
-    const elHours = document.getElementById("cdHours");
-    const elMins  = document.getElementById("cdMins");
-    if (!elDays) return;
-
-    function tick() {
-      const diff = target - Date.now();
-      if (diff <= 0) {
-        const el = document.getElementById("eventCountdown");
-        if (el) el.innerHTML = '<span style="font-family:var(--hand);font-size:24px;color:var(--cream)">Tonight ✦</span>';
-        return;
-      }
-      elDays.textContent  = String(Math.floor(diff / 86400000)).padStart(2, "0");
-      elHours.textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, "0");
-      elMins.textContent  = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
-    }
-    tick();
-    setInterval(tick, 30000);
-  })();
-
   /* ── Book button placeholder ── */
   const bookBtn = document.getElementById("bookBtn");
   if (bookBtn) {
@@ -232,11 +209,6 @@
   gsap.from(".event-stack", {
     y: 30, duration: 1, ease: "power3.out",
     scrollTrigger: { trigger: ".event-stack", start: "top 85%" },
-  });
-
-  gsap.from(".event-countdown", {
-    y: 14, duration: 0.8, ease: "power2.out",
-    scrollTrigger: { trigger: ".event-countdown", start: "top 92%" },
   });
 
   /* ── Mic doodle: draw on scroll + idle + parallax ── */
