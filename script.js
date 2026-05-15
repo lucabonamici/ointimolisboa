@@ -4,6 +4,13 @@
    ========================================================= */
 
 (function () {
+  // Real viewport height for iOS Safari — address bar makes 100vh taller than visible area
+  function setVH() {
+    document.documentElement.style.setProperty("--vh", (window.innerHeight * 0.01) + "px");
+  }
+  setVH();
+  window.addEventListener("resize", setVH, { passive: true });
+
   // Prevent iOS Safari from restoring a previous scroll position on fresh load
   if (history.scrollRestoration) history.scrollRestoration = "manual";
   window.scrollTo(0, 0);
@@ -209,21 +216,6 @@
   gsap.from(".event-stack", {
     y: 30, duration: 1, ease: "power3.out",
     scrollTrigger: { trigger: ".event-stack", start: "top 85%" },
-  });
-
-  /* ── Mic doodle: draw on scroll + idle + parallax ── */
-  drawOnScroll(".doodle-mic", { trigger: ".event", start: "top 60%", end: "center 25%", stagger: 0.04 });
-
-  ScrollTrigger.create({ trigger: ".doodle-mic", start: "top 80%", once: true,
-    onEnter: () => gsap.to(".doodle-mic", {
-      y: -10, rotation: -2.5, transformOrigin: "center bottom",
-      duration: 4.2, repeat: -1, yoyo: true, ease: "sine.inOut",
-    }),
-  });
-
-  gsap.to(".doodle-mic", {
-    yPercent: -20, ease: "none",
-    scrollTrigger: { trigger: ".event", start: "top bottom", end: "bottom top", scrub: 0.8 },
   });
 
   /* ── Book section ── */

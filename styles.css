@@ -419,20 +419,6 @@ a {
   transform: rotate(-2.8deg) translateX(-5px) translateY(6px);
 }
 
-/* ── Microphone doodle ── */
-.doodle-mic {
-  position: absolute;
-  width: clamp(52px, 6.5vw, 82px);
-  height: auto;
-  top: 50%;
-  right: clamp(16px, 4.5vw, 64px);
-  transform: translateY(-38%);
-  opacity: 0.72;
-}
-
-@media (max-width: 860px) {
-  .doodle-mic { display: none; }
-}
 
 /* doodles */
 .about-doodles {
@@ -467,10 +453,7 @@ a {
 .doodle-notes line,
 .doodle-notes circle,
 .doodle-notes ellipse,
-.doodle-mic path,
-.doodle-mic line,
-.doodle-mic circle,
-.doodle-mic ellipse,
+
 .doodle-chair path,
 .doodle-chair line,
 .doodle-chair circle,
@@ -897,11 +880,11 @@ a {
   .hero { min-height: 100svh; }
 }
 
-/* ---- Mobile: lock hero to exact full screen so video fills edge-to-edge ---- */
+/* ---- Mobile: lock hero to exact visible height (--vh set by JS for iOS Safari) ---- */
 @media (max-width: 640px) {
   .hero {
-    height: 100vh;
-    min-height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    min-height: calc(var(--vh, 1vh) * 100);
   }
 
   /* Lighten vignette so video shows across the full screen */
@@ -914,11 +897,15 @@ a {
     );
   }
 
-  /* Zoom into the warm mid-section of the video, cropping out the dark ceiling */
+  /* Use JS --vh variable so the video matches the real visible height on iOS */
   .hero-video {
-    object-position: center center;
-    transform: scale(1.6);
-    transform-origin: center 60%;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 60%;
+    transform: none;
   }
 
   /* Fill full hero height so scroll-hint pins to the real bottom edge */
