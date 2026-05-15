@@ -547,6 +547,15 @@ a {
     grid-template-columns: 1fr;
     text-align: center;
   }
+
+  /* Hide video on phones — landscape video fills portrait badly; gradient shows instead */
+  .hero-video {
+    display: none;
+  }
+
+  .about-doodles {
+    min-height: 240px;
+  }
 }
 
 .event-date-block {
@@ -954,10 +963,10 @@ a {
     max-width: 100%;
   }
 
+  /* Hide decorative doodles on phones — they're invisible (stroke-dashoffset)
+     and their container creates a large blank space on mobile */
   .about-doodles {
-    min-height: 360px;
-    max-width: 100%;
-    margin-top: 16px;
+    display: none;
   }
 
   /* Keep guitar from being clipped */
