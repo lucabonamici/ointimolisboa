@@ -884,9 +884,16 @@ a {
     transform-origin: center 60%;
   }
 
-  /* Reduce top padding so content sits at true center of screen */
+  /* Fill full hero height so scroll-hint pins to the real bottom edge */
   .hero-content {
-    padding-top: 56px;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 72px 24px 0;
+    max-width: none;
   }
 }
 
