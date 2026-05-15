@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>L'Intime — Live Sessions</title>
+    <meta
+      name="description"
+      content="Intimate living room live music sessions. Low lights. Close company. Real sound."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&family=Caveat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="#top" class="nav-brand">L'Intime</a>
+      <div class="nav-links">
+        <a href="#about">Concept</a>
+        <a href="#event">Next Event</a>
+        <a href="#book">Book a Seat</a>
+      </div>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="top">
+      <video
+        class="hero-video"
+        src="intro.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-hidden="true"
+      ></video>
+      <div class="hero-vignette" aria-hidden="true"></div>
+
+      <div class="hero-content">
+        <!-- Logo recreated as SVG -->
+        <svg
+          class="logo-mark"
+          viewBox="0 0 220 60"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label="L'Intime equalizer mark"
+        >
+          <g
+            stroke="#F7D7A2"
+            stroke-width="2"
+            stroke-linecap="round"
+            fill="none"
+          >
+            <line x1="20" y1="34" x2="20" y2="26" />
+            <line x1="30" y1="38" x2="30" y2="22" />
+            <line x1="40" y1="42" x2="40" y2="18" />
+            <line x1="50" y1="36" x2="50" y2="24" />
+            <line x1="60" y1="46" x2="60" y2="14" />
+            <line x1="70" y1="40" x2="70" y2="20" />
+            <line x1="80" y1="44" x2="80" y2="16" />
+            <line x1="90" y1="48" x2="90" y2="12" />
+            <line x1="100" y1="52" x2="100" y2="8" />
+            <line x1="110" y1="56" x2="110" y2="4" />
+            <line x1="120" y1="52" x2="120" y2="8" />
+            <line x1="130" y1="48" x2="130" y2="12" />
+            <line x1="140" y1="44" x2="140" y2="16" />
+            <line x1="150" y1="40" x2="150" y2="20" />
+            <line x1="160" y1="46" x2="160" y2="14" />
+            <line x1="170" y1="36" x2="170" y2="24" />
+            <line x1="180" y1="42" x2="180" y2="18" />
+            <line x1="190" y1="38" x2="190" y2="22" />
+            <line x1="200" y1="34" x2="200" y2="26" />
+          </g>
+        </svg>
+
+        <h1 class="logo-text">L'Intime</h1>
+        <p class="logo-sub">Live Sessions</p>
+
+        <p class="hero-handwritten">
+          <span class="chev">&laquo;</span>
+          an intimate living room session
+          <span class="chev">&raquo;</span>
+        </p>
+
+        <div class="scroll-hint">
+          <span>scroll</span>
+          <svg viewBox="0 0 20 30" aria-hidden="true">
+            <path
+              d="M10 4 L10 22 M4 16 L10 24 L16 16"
+              stroke="#F7D7A2"
+              stroke-width="1.4"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONCEPT / ABOUT ============ -->
+    <section class="about" id="about">
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="eyebrow">The Concept</p>
+          <h2>
+            A living room. <em>Low lights.</em><br />
+            Music that finds you up close.
+          </h2>
+          <p class="lede">
+            L'Intime gathers a handful of guests in my living room for an
+            evening of live, unplugged sessions. No stage, no crowd — just
+            armchairs, candlelight, a glass in hand, and the artist breathing
+            the same air as the audience.
+          </p>
+          <p class="lede">
+            Between songs, people talk. Before the music, they meet. After it,
+            they linger. That's the whole idea.
+          </p>
+        </div>
+
+        <div class="about-doodles" aria-hidden="true">
+          <!-- LAMP -->
+          <svg
+            class="doodle doodle-lamp"
+            viewBox="0 0 140 200"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g
+              fill="none"
+              stroke="#F7D7A2"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <!-- cord -->
+              <path d="M70 0 C 71 18, 69 32, 70 50" />
+              <!-- shade (slightly wobbly trapezoid) -->
+              <path
+                d="M42 52 C 50 50, 90 50, 98 52 L 108 110 C 92 116, 48 116, 32 110 Z"
+              />
+              <!-- shade base line -->
+              <path d="M32 110 C 60 117, 80 117, 108 110" />
+              <!-- light rays -->
+              <path d="M40 124 L 28 150" />
+              <path d="M55 128 L 50 158" />
+              <path d="M70 130 L 70 162" />
+              <path d="M85 128 L 90 158" />
+              <path d="M100 124 L 112 150" />
+              <!-- a few glow sparkles -->
+              <circle cx="36" cy="142" r="1.2" />
+              <circle cx="104" cy="142" r="1.2" />
+              <circle cx="70" cy="150" r="1.4" />
+            </g>
+          </svg>
+
+          <!-- GUITAR -->
+          <svg
+            class="doodle doodle-guitar"
+            viewBox="0 0 120 260"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g
+              fill="none"
+              stroke="#F7D7A2"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <!-- headstock -->
+              <path d="M48 8 L 72 8 L 74 28 L 46 28 Z" />
+              <!-- tuning pegs -->
+              <circle cx="52" cy="14" r="1.4" />
+              <circle cx="60" cy="14" r="1.4" />
+              <circle cx="68" cy="14" r="1.4" />
+              <circle cx="52" cy="22" r="1.4" />
+              <circle cx="60" cy="22" r="1.4" />
+              <circle cx="68" cy="22" r="1.4" />
+              <!-- nut -->
+              <path d="M46 30 L 74 30" />
+              <!-- neck -->
+              <path d="M50 30 L 48 110" />
+              <path d="M70 30 L 72 110" />
+              <!-- frets -->
+              <path d="M50 50 L 70 50" />
+              <path d="M50 70 L 71 70" />
+              <path d="M49 90 L 71 90" />
+              <!-- body (figure-8, hand-drawn-ish) -->
+              <path
+                d="M48 110
+                   C 30 116, 14 134, 14 158
+                   C 14 196, 40 232, 60 232
+                   C 80 232, 106 196, 106 158
+                   C 106 134, 90 116, 72 110
+                   Z"
+              />
+              <!-- waist indent -->
+              <path d="M22 150 C 30 154, 38 156, 48 156" />
+              <path d="M72 156 C 82 156, 90 154, 98 150" />
+              <!-- sound hole -->
+              <ellipse cx="60" cy="170" rx="14" ry="13" />
+              <!-- bridge -->
+              <path d="M44 200 L 76 200" />
+              <path d="M44 200 L 44 206" />
+              <path d="M76 200 L 76 206" />
+              <path d="M44 206 L 76 206" />
+              <!-- strings -->
+              <path d="M54 32 L 50 200" opacity="0.7" />
+              <path d="M58 32 L 56 200" opacity="0.7" />
+              <path d="M62 32 L 64 200" opacity="0.7" />
+              <path d="M66 32 L 70 200" opacity="0.7" />
+            </g>
+          </svg>
+
+          <!-- NOTES + WAVES -->
+          <svg
+            class="doodle doodle-notes"
+            viewBox="0 0 200 160"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g
+              fill="none"
+              stroke="#F7D7A2"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <!-- eighth note -->
+              <ellipse cx="30" cy="100" rx="8" ry="6" transform="rotate(-20 30 100)" />
+              <path d="M37 96 L 37 50 C 50 56, 56 70, 50 80" />
+              <!-- beamed eighth notes -->
+              <ellipse cx="100" cy="110" rx="8" ry="6" transform="rotate(-20 100 110)" />
+              <path d="M107 106 L 107 60" />
+              <ellipse cx="140" cy="118" rx="8" ry="6" transform="rotate(-20 140 118)" />
+              <path d="M147 114 L 147 68" />
+              <path d="M107 60 L 147 68" />
+              <!-- little curly swoosh -->
+              <path d="M10 30 C 30 10, 60 50, 90 30 C 120 10, 150 50, 180 30" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NEXT EVENT ============ -->
+    <section class="event" id="event">
+      <div class="event-wrap">
+        <p class="eyebrow center">The Next Session</p>
+        <h2 class="center">Next Event</h2>
+
+        <div class="event-card">
+          <div class="event-date-block">
+            <span class="event-day">14</span>
+            <span class="event-month">June</span>
+            <span class="event-year">2026</span>
+          </div>
+
+          <div class="event-meta">
+            <p class="event-artist-eyebrow">Featuring</p>
+            <h3 class="event-artist">Camille &amp; the Lamps</h3>
+            <p class="event-detail">
+              Doors <strong>19:30</strong> &nbsp;·&nbsp; Set begins
+              <strong>20:30</strong>
+            </p>
+            <p class="event-detail">
+              The Living Room &nbsp;·&nbsp; <em>address shared after booking</em>
+            </p>
+            <p class="event-handwritten">
+              <span class="chev">&laquo;</span> only 14 seats
+              <span class="chev">&raquo;</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BOOK A SEAT ============ -->
+    <section class="book" id="book">
+      <div class="book-wrap">
+        <p class="eyebrow center">Reserve</p>
+        <h2 class="center">Book a Seat</h2>
+        <p class="book-lede center">
+          The sessions are intimate by design — fourteen guests, no more.
+          Leave your name and we'll send you the address.
+        </p>
+
+        <a href="#" class="book-btn" id="bookBtn" role="button">
+          <span>Reserve your seat</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M5 12 L 19 12 M 13 6 L 19 12 L 13 18"
+              stroke="currentColor"
+              stroke-width="1.6"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </a>
+
+        <p class="book-foot">
+          a confirmation comes by hand &mdash; or by email
+        </p>
+
+        <!-- CHAIR -->
+        <svg
+          class="doodle-chair"
+          viewBox="0 0 220 260"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <g
+            fill="none"
+            stroke="#F7D7A2"
+            stroke-width="2.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <!-- back top rail -->
+            <path d="M58 30 C 100 22, 130 22, 168 30" />
+            <!-- back posts -->
+            <path d="M58 30 L 64 150" />
+            <path d="M168 30 L 162 150" />
+            <!-- spindles -->
+            <path d="M82 38 L 86 148" />
+            <path d="M110 38 L 112 148" />
+            <path d="M140 38 L 140 148" />
+            <!-- seat (slight curve) -->
+            <path d="M44 150 C 100 160, 130 160, 184 150" />
+            <path d="M44 150 L 50 168" />
+            <path d="M184 150 L 178 168" />
+            <path d="M50 168 C 100 178, 130 178, 178 168" />
+            <!-- legs -->
+            <path d="M52 168 L 46 248" />
+            <path d="M176 168 L 182 248" />
+            <path d="M72 174 L 70 240" />
+            <path d="M156 174 L 158 240" />
+            <!-- stretcher -->
+            <path d="M52 220 L 176 220" />
+            <!-- subtle shadow under -->
+            <path d="M40 254 C 100 260, 130 260, 188 254" />
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+      <div class="footer-line"></div>
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="footer-mark">L'Intime</span>
+          <span class="footer-sub">Live Sessions</span>
+        </div>
+        <p class="footer-note">
+          A living room series. Hosted with care.
+          <br />
+          &copy; 2026 &middot; All songs reserved.
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
