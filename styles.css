@@ -867,42 +867,35 @@ a {
     min-height: 100vh;
   }
 
-  /* object-fit: cover on <video> is unreliable on iOS Safari — the video
-     renders letterboxed instead of filling the container. Use the
-     min-width/min-height + translate centering approach instead. */
+  /*
+   * On portrait mobile, intro.mp4 is landscape (wider than tall).
+   * Pinning height to the viewport height and leaving width auto causes
+   * the browser to scale the video proportionally — the width overflows
+   * and gets clipped by hero's overflow:hidden, achieving a true cover.
+   * This is more reliable than object-fit:cover on iOS Safari video.
+   */
   .hero-video {
     inset: auto;
     top: 50%;
     left: 50%;
     width: auto;
-    height: auto;
+    height: 100vh;
     min-width: 100vw;
-    min-height: 100vh;
     transform: translate(-50%, -50%);
   }
 }
 
 @supports (height: 100svh) {
   @media (max-width: 640px) {
-    .hero {
-      height: 100svh;
-      min-height: 100svh;
-    }
-    .hero-video {
-      min-height: 100svh;
-    }
+    .hero        { height: 100svh; min-height: 100svh; }
+    .hero-video  { height: 100svh; }
   }
 }
 
 @supports (height: 100dvh) {
   @media (max-width: 640px) {
-    .hero {
-      height: 100dvh;
-      min-height: 100dvh;
-    }
-    .hero-video {
-      min-height: 100dvh;
-    }
+    .hero        { height: 100dvh; min-height: 100dvh; }
+    .hero-video  { height: 100dvh; }
   }
 }
 
