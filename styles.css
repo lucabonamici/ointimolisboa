@@ -206,10 +206,10 @@ a {
 /* Hero video wrapper — clips the video and owns the z-layer */
 .hero-video-wrap {
   position: absolute;
-  top: 0;
+  top: -12%;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: -12%;
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
@@ -984,13 +984,13 @@ a {
     );
   }
 
-  /* Wrapper fills the full hero on mobile — video inside is already translate-centered */
+  /* Wrapper extends beyond hero bounds to absorb parallax motion without dark bars */
   .hero-video-wrap {
     position: absolute;
-    top: 0;
+    top: -12%;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: -12%;
   }
 
   /* Fill full hero height so scroll-hint pins to the real bottom edge */
