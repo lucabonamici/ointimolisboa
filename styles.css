@@ -716,12 +716,13 @@ a {
 .section-arrow {
   display: block;
   width: clamp(32px, 4vw, 44px);
-  height: clamp(96px, 13vw, 132px);
+  height: clamp(150px, 20vw, 220px);
   margin: clamp(-32px, -3vw, -16px) auto clamp(-24px, -2vw, -8px);
   position: relative;
   z-index: 5;
-  opacity: 0.8;
+  opacity: 0.85;
   pointer-events: none;
+  will-change: transform;
 }
 
 .book-wrap {

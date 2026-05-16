@@ -401,6 +401,20 @@
 
   /* Section arrow: hand-drawn down arrow bridging Event → Book */
   drawOnScroll(".section-arrow", { start: "top 95%", end: "top 30%", stagger: 0.06 });
+  /* Continuous gentle bounce — invites the eye toward the booking section. */
+  ScrollTrigger.create({
+    trigger: ".section-arrow",
+    start: "top 90%",
+    once: true,
+    onEnter: () =>
+      gsap.to(".section-arrow", {
+        y: 12,
+        duration: 1.4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      }),
+  });
 
   /* Chair: draw on scroll */
   drawOnScroll(".doodle-chair", { start: "top 95%", end: "top 45%", stagger: 0.04 });
