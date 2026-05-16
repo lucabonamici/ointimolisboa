@@ -710,6 +710,22 @@ a {
   overflow: hidden;
 }
 
+.book::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(70%, 480px);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(247, 215, 162, 0) 0%,
+    rgba(247, 215, 162, 0.4) 50%,
+    rgba(247, 215, 162, 0) 100%
+  );
+}
+
 .book-wrap {
   max-width: 600px;
   margin: 0 auto;

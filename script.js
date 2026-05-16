@@ -115,13 +115,24 @@
     reserveForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const submitBtn = reserveForm.querySelector('button[type="submit"]');
-      if (reserveError) reserveError.hidden = true;
+      if (reserveError) {
+        reserveError.hidden = true;
+        reserveError.textContent =
+          "Something went wrong. Please try again or message us on Instagram.";
+      }
       submitBtn.disabled = true;
       submitBtn.classList.add("is-loading");
 
       try {
         const fd = new FormData(reserveForm);
-        // Build a tidy message body for the email.
+
+        const accessKey = (fd.get("access_key") || "").toString();
+        if (!accessKey || accessKey === "YOUR_WEB3FORMS_ACCESS_KEY") {
+          throw new Error(
+            "Form not configured yet — the Web3Forms access key is missing."
+          );
+        }
+
         const message = [
           `Name: ${fd.get("name") || "-"}`,
           `Email: ${fd.get("email") || "-"}`,
@@ -136,11 +147,18 @@
           body: fd,
         });
         const data = await res.json().catch(() => ({}));
-        if (!data.success) throw new Error(data.message || "Submission failed");
+        console.log("Web3Forms response:", res.status, data);
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || `Server responded ${res.status}`);
+        }
 
         showModalView("success");
       } catch (err) {
-        if (reserveError) reserveError.hidden = false;
+        console.error("Reservation submit failed:", err);
+        if (reserveError) {
+          reserveError.textContent = err.message || "Submission failed.";
+          reserveError.hidden = false;
+        }
       } finally {
         submitBtn.disabled = false;
         submitBtn.classList.remove("is-loading");
