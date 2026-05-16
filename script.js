@@ -61,18 +61,90 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  /* ── Book button placeholder ── */
+  /* ── Reservation modal ── */
+  const reserveModal = document.getElementById("reserveModal");
+  const reserveForm  = document.getElementById("reserveForm");
+  const reserveError = document.getElementById("reserveError");
+
+  const showModalView = (name) => {
+    if (!reserveModal) return;
+    reserveModal.querySelectorAll("[data-modal-view]").forEach((view) => {
+      view.hidden = view.dataset.modalView !== name;
+    });
+  };
+
+  const openModal = () => {
+    if (!reserveModal) return;
+    showModalView("form");
+    reserveForm?.reset();
+    if (reserveError) reserveError.hidden = true;
+    reserveModal.classList.add("is-open");
+    reserveModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    setTimeout(() => {
+      reserveModal.querySelector('input[name="name"]')?.focus();
+    }, 80);
+  };
+
+  const closeModal = () => {
+    if (!reserveModal) return;
+    reserveModal.classList.remove("is-open");
+    reserveModal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+  };
+
   const bookBtn = document.getElementById("bookBtn");
   if (bookBtn) {
     bookBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      const span = bookBtn.querySelector("span");
-      span.textContent = "Booking opens soon";
-      bookBtn.style.pointerEvents = "none";
-      setTimeout(() => {
-        span.textContent = "Reserve your seat";
-        bookBtn.style.pointerEvents = "";
-      }, 2400);
+      openModal();
+    });
+  }
+
+  reserveModal?.querySelectorAll("[data-modal-close]").forEach((el) => {
+    el.addEventListener("click", closeModal);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && reserveModal?.classList.contains("is-open")) {
+      closeModal();
+    }
+  });
+
+  if (reserveForm) {
+    reserveForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = reserveForm.querySelector('button[type="submit"]');
+      if (reserveError) reserveError.hidden = true;
+      submitBtn.disabled = true;
+      submitBtn.classList.add("is-loading");
+
+      try {
+        const fd = new FormData(reserveForm);
+        // Build a tidy message body for the email.
+        const message = [
+          `Name: ${fd.get("name") || "-"}`,
+          `Email: ${fd.get("email") || "-"}`,
+          `Phone: ${fd.get("phone") || "-"}`,
+          `Attendees: ${fd.get("attendees") || "-"}`,
+          `Comment: ${fd.get("comment") || "-"}`,
+        ].join("\n");
+        fd.append("message", message);
+
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: fd,
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!data.success) throw new Error(data.message || "Submission failed");
+
+        showModalView("success");
+      } catch (err) {
+        if (reserveError) reserveError.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove("is-loading");
+      }
     });
   }
 

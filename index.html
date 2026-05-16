@@ -434,6 +434,167 @@
       </div>
     </footer>
 
+    <!-- ============ RESERVATION MODAL ============ -->
+    <div
+      class="modal"
+      id="reserveModal"
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reserveTitle"
+    >
+      <div class="modal-backdrop" data-modal-close></div>
+      <div class="modal-panel" role="document">
+        <button
+          class="modal-close"
+          type="button"
+          data-modal-close
+          aria-label="Close"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <path d="M6 6l12 12M18 6L6 18"/>
+          </svg>
+        </button>
+
+        <!-- FORM STATE -->
+        <div class="modal-view modal-view-form" data-modal-view="form">
+          <p class="eyebrow center">Reserve</p>
+          <h3 class="modal-title" id="reserveTitle">Reserve your seat</h3>
+          <p class="modal-sub">
+            A few details and we'll save your spot at the next session.
+          </p>
+
+          <form id="reserveForm" novalidate>
+            <!-- Web3Forms config (replace ACCESS KEY below with your own from https://web3forms.com) -->
+            <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
+            <input type="hidden" name="subject" value="New L'Intime reservation" />
+            <input type="hidden" name="from_name" value="L'Intime reservations" />
+            <!-- honeypot anti-spam -->
+            <input type="checkbox" name="botcheck" class="modal-honeypot" tabindex="-1" autocomplete="off" />
+
+            <label class="field">
+              <span class="field-label">Your Name</span>
+              <input type="text" name="name" required autocomplete="name" />
+            </label>
+
+            <label class="field">
+              <span class="field-label">Email</span>
+              <input type="email" name="email" required autocomplete="email" />
+            </label>
+
+            <div class="field-row">
+              <label class="field field-flex">
+                <span class="field-label">Phone Number</span>
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  autocomplete="tel"
+                  placeholder="+351 9XX XXX XXX"
+                />
+              </label>
+
+              <label class="field field-small">
+                <span class="field-label">Attendees</span>
+                <input
+                  type="number"
+                  name="attendees"
+                  required
+                  min="1"
+                  max="14"
+                  value="1"
+                />
+              </label>
+            </div>
+
+            <label class="field">
+              <span class="field-label">
+                Comment <span class="field-optional">(optional)</span>
+              </span>
+              <textarea name="comment" rows="2"></textarea>
+            </label>
+
+            <p class="modal-error" id="reserveError" hidden>
+              Something went wrong. Please try again or message us on Instagram.
+            </p>
+
+            <div class="modal-actions">
+              <button
+                type="button"
+                class="modal-btn modal-btn-ghost"
+                data-modal-close
+              >
+                Cancel
+              </button>
+              <button type="submit" class="modal-btn modal-btn-primary">
+                <span class="modal-btn-label">Continue</span>
+                <span class="modal-btn-spinner" aria-hidden="true"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- SUCCESS STATE -->
+        <div class="modal-view modal-view-success" data-modal-view="success" hidden>
+          <div class="success-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="24" cy="24" r="20"/>
+              <path d="M16 24l6 6 12-14"/>
+            </svg>
+          </div>
+          <p class="eyebrow center">Confirmed</p>
+          <h3 class="modal-title">You're on the list</h3>
+          <p class="modal-sub">
+            We'll follow up shortly with any final details. Here's what to know:
+          </p>
+
+          <dl class="modal-details">
+            <div class="detail">
+              <dt>Address</dt>
+              <dd>Rua das Janelas Verdes 12</dd>
+            </div>
+            <div class="detail">
+              <dt>Time</dt>
+              <dd>18h — 22h</dd>
+            </div>
+          </dl>
+
+          <div class="donation-block">
+            <p class="eyebrow center">Donation</p>
+            <p class="donation-lede">
+              <strong>€13 suggested</strong> — covers basic costs and supports the artists.
+              <br />
+              <strong>€8 minimum</strong> — for those who can't afford full price, covers only basic costs.
+            </p>
+            <ul class="donation-methods">
+              <li>
+                <span class="donation-label">Revolut</span>
+                <span class="donation-value">@lintimeparis</span>
+              </li>
+              <li>
+                <span class="donation-label">MBWay</span>
+                <span class="donation-value">+351 937 133 355</span>
+              </li>
+              <li>
+                <span class="donation-label">PayPal</span>
+                <span class="donation-value">LucasTorres82746</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="modal-actions modal-actions-single">
+            <button
+              type="button"
+              class="modal-btn modal-btn-primary"
+              data-modal-close
+            >
+              <span class="modal-btn-label">Got it</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script src="script.js"></script>
