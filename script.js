@@ -190,9 +190,9 @@
        {{event_time}}  — "18h — 22h"
        {{address}}     — "Rua das Janelas Verdes 12"
   */
-  const EMAILJS_PUBLIC_KEY  = "YOUR_EMAILJS_PUBLIC_KEY";
-  const EMAILJS_SERVICE_ID  = "YOUR_EMAILJS_SERVICE_ID";
-  const EMAILJS_TEMPLATE_ID = "YOUR_EMAILJS_TEMPLATE_ID";
+  const EMAILJS_PUBLIC_KEY  = "cGgFwb2C3q0HU4vuj";
+  const EMAILJS_SERVICE_ID  = "service_7f8di29";
+  const EMAILJS_TEMPLATE_ID = "template_esu7k5a";
 
   let emailjsReady = false;
   if (
