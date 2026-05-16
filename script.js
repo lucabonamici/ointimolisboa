@@ -39,9 +39,12 @@
     });
   }
 
-  /* ── Hero video: fade in once playable ── */
+  /* ── Hero video: pick mobile or desktop source, then fade in ── */
+  const isMobile = window.matchMedia("(max-width: 640px)").matches;
   const heroVideo = document.querySelector(".hero-video");
   if (heroVideo) {
+    heroVideo.src = isMobile ? "mobile_video.mov" : "intro.mp4";
+    heroVideo.load();
     const reveal = () => heroVideo.classList.add("is-ready");
     if (heroVideo.readyState >= 2) reveal();
     else {
@@ -133,12 +136,14 @@
     yPercent: -10, opacity: 0.45, ease: "none",
     scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.6 },
   });
-  /* Parallax targets the wrapper — the video's own transform (translate-center)
-     stays untouched, and the wrapper's overflow:hidden clips any movement. */
-  gsap.to(".hero-video-wrap", {
-    yPercent: 8, scale: 1.04, ease: "none",
-    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.6 },
-  });
+  /* Video parallax on desktop only — on mobile the portrait video fills the
+     wrapper exactly and any shift would expose the background at the edges. */
+  if (!isMobile) {
+    gsap.to(".hero-video-wrap", {
+      yPercent: 8, scale: 1.04, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.6 },
+    });
+  }
 
   /* ── About: subtle slide only — no opacity gating ── */
   // Opacity is NOT touched here so text is always readable
