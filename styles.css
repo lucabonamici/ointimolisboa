@@ -710,20 +710,18 @@ a {
   overflow: hidden;
 }
 
-.book::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(70%, 480px);
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(247, 215, 162, 0) 0%,
-    rgba(247, 215, 162, 0.4) 50%,
-    rgba(247, 215, 162, 0) 100%
-  );
+/* Hand-drawn line that bridges the Event card and Book section.
+   Negative margins pull it up into the event area and down into the
+   book area so it visually connects them. */
+.section-connector {
+  display: block;
+  width: clamp(48px, 7vw, 72px);
+  height: clamp(180px, 22vw, 260px);
+  margin: clamp(-110px, -12vw, -60px) auto clamp(-110px, -12vw, -60px);
+  position: relative;
+  z-index: 5;
+  opacity: 0.85;
+  pointer-events: none;
 }
 
 .book-wrap {

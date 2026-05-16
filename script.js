@@ -325,6 +325,9 @@
     scrollTrigger: { trigger: ".book-btn", start: "top 88%" },
   });
 
+  /* Section connector: hand-drawn line bridging Event → Book */
+  drawOnScroll(".section-connector", { start: "top 95%", end: "top 30%", stagger: 0.06 });
+
   /* Chair: draw on scroll */
   drawOnScroll(".doodle-chair", { start: "top 95%", end: "top 45%", stagger: 0.04 });
   ScrollTrigger.create({ trigger: ".doodle-chair", start: "top 85%", once: true,

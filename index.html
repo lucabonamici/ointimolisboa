@@ -317,6 +317,35 @@
 
     </section>
 
+    <!-- ============ HAND-DRAWN CONNECTOR ============ -->
+    <svg
+      class="section-connector"
+      viewBox="0 0 80 260"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <g
+        fill="none"
+        stroke="#F7D7A2"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <!-- main flowing line -->
+        <path
+          d="M40 2
+             C 56 26, 22 54, 40 86
+             C 58 118, 24 150, 40 182
+             C 50 204, 34 224, 40 246"
+        />
+        <!-- terminating little flick -->
+        <path d="M40 246 C 41 252, 44 256, 48 258" />
+        <!-- two tiny pulse dots along the line -->
+        <circle cx="32" cy="68" r="1.6" />
+        <circle cx="48" cy="166" r="1.6" />
+      </g>
+    </svg>
+
     <!-- ============ BOOK A SEAT ============ -->
     <section class="book" id="book">
       <div class="book-wrap">
@@ -466,7 +495,7 @@
 
           <form id="reserveForm" novalidate>
             <!-- Web3Forms config (replace ACCESS KEY below with your own from https://web3forms.com) -->
-            <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
+            <input type="hidden" name="access_key" value="f2448450-e440-441f-a053-2327956e6b28" />
             <input type="hidden" name="subject" value="New L'Intime reservation" />
             <input type="hidden" name="from_name" value="L'Intime reservations" />
             <!-- honeypot anti-spam -->
