@@ -152,6 +152,16 @@
           throw new Error(data.message || `Server responded ${res.status}`);
         }
 
+        // Fire-and-forget confirmation email to the user via EmailJS.
+        // The form succeeds either way; we don't block the success screen
+        // on the auto-reply finishing.
+        sendUserConfirmation({
+          name: fd.get("name"),
+          email: fd.get("email"),
+          phone: fd.get("phone"),
+          attendees: fd.get("attendees"),
+        });
+
         showModalView("success");
       } catch (err) {
         console.error("Reservation submit failed:", err);
@@ -165,6 +175,70 @@
       }
     });
   }
+
+  /* ── EmailJS user confirmation ──
+     Replace the three EMAILJS_* placeholders below with your own values
+     from https://www.emailjs.com (Account → API Keys, Email Services,
+     Email Templates). Until they're filled in, the form still works —
+     this function just no-ops and logs to the console.
+
+     The template should use these variables:
+       {{name}}        — registrant's name
+       {{email}}       — registrant's email (use as "To Email")
+       {{attendees}}   — number of attendees
+       {{event_date}}  — "14 June 2026"
+       {{event_time}}  — "18h — 22h"
+       {{address}}     — "Rua das Janelas Verdes 12"
+  */
+  const EMAILJS_PUBLIC_KEY  = "YOUR_EMAILJS_PUBLIC_KEY";
+  const EMAILJS_SERVICE_ID  = "YOUR_EMAILJS_SERVICE_ID";
+  const EMAILJS_TEMPLATE_ID = "YOUR_EMAILJS_TEMPLATE_ID";
+
+  let emailjsReady = false;
+  if (
+    typeof emailjs !== "undefined" &&
+    EMAILJS_PUBLIC_KEY &&
+    !EMAILJS_PUBLIC_KEY.startsWith("YOUR_")
+  ) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    emailjsReady = true;
+  }
+
+  function sendUserConfirmation({ name, email, phone, attendees }) {
+    if (!emailjsReady) {
+      console.warn(
+        "EmailJS not configured — skipping user confirmation email."
+      );
+      return;
+    }
+    const params = {
+      name: name || "",
+      email: email || "",
+      phone: phone || "",
+      attendees: attendees || "1",
+      event_date: "14 June 2026",
+      event_time: "18h — 22h",
+      address: "Rua das Janelas Verdes 12",
+    };
+    emailjs
+      .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+      .then((res) => console.log("EmailJS sent:", res.status, res.text))
+      .catch((err) => console.error("EmailJS failed:", err));
+  }
+
+  /* ── Copy-to-clipboard for donation methods (MBWay) ── */
+  document.querySelectorAll(".donation-link[data-copy]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const value = btn.getAttribute("data-copy");
+      try {
+        await navigator.clipboard.writeText(value);
+        btn.classList.add("is-copied");
+        setTimeout(() => btn.classList.remove("is-copied"), 1400);
+      } catch (err) {
+        console.warn("Clipboard write failed:", err);
+      }
+    });
+  });
 
   /* ── GSAP guard: if missing or reduced motion, all content stays visible ── */
   if (reduceMotion || typeof gsap === "undefined") return;
@@ -325,8 +399,8 @@
     scrollTrigger: { trigger: ".book-btn", start: "top 88%" },
   });
 
-  /* Section connector: hand-drawn line bridging Event → Book */
-  drawOnScroll(".section-connector", { start: "top 95%", end: "top 30%", stagger: 0.06 });
+  /* Section arrow: hand-drawn down arrow bridging Event → Book */
+  drawOnScroll(".section-arrow", { start: "top 95%", end: "top 30%", stagger: 0.06 });
 
   /* Chair: draw on scroll */
   drawOnScroll(".doodle-chair", { start: "top 95%", end: "top 45%", stagger: 0.04 });

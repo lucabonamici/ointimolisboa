@@ -710,17 +710,17 @@ a {
   overflow: hidden;
 }
 
-/* Hand-drawn line that bridges the Event card and Book section.
-   Negative margins pull it up into the event area and down into the
-   book area so it visually connects them. */
-.section-connector {
+/* Hand-drawn down arrow bridging Event → Book.
+   Sits in normal flow between the two sections and points
+   the user toward the booking call to action. */
+.section-arrow {
   display: block;
-  width: clamp(48px, 7vw, 72px);
-  height: clamp(180px, 22vw, 260px);
-  margin: clamp(-110px, -12vw, -60px) auto clamp(-110px, -12vw, -60px);
+  width: clamp(32px, 4vw, 44px);
+  height: clamp(96px, 13vw, 132px);
+  margin: clamp(-32px, -3vw, -16px) auto clamp(-24px, -2vw, -8px);
   position: relative;
   z-index: 5;
-  opacity: 0.85;
+  opacity: 0.8;
   pointer-events: none;
 }
 
@@ -1642,31 +1642,91 @@ a {
   flex-direction: column;
   gap: 8px;
 }
-.donation-methods li {
+.donation-methods li { display: block; }
+
+.donation-link {
+  position: relative;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
+  width: 100%;
   padding: 11px 16px;
-  border: 1px solid rgba(247, 215, 162, 0.14);
+  border: 1px solid rgba(247, 215, 162, 0.16);
   border-radius: 2px;
   background: rgba(247, 215, 162, 0.02);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+  overflow: hidden;
 }
+.donation-link:hover,
+.donation-link:focus-visible {
+  border-color: rgba(247, 215, 162, 0.45);
+  background: rgba(247, 215, 162, 0.06);
+  outline: none;
+}
+.donation-link:hover .donation-arrow {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+.donation-link:active {
+  transform: scale(0.99);
+}
+
 .donation-label {
   font-family: var(--sans);
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.22em;
   color: var(--cream-dim);
+  flex-shrink: 0;
 }
 .donation-value {
   font-family: var(--sans);
   font-size: 14px;
   color: var(--cream-soft);
   font-weight: 400;
-  user-select: all;
-  -webkit-user-select: all;
   text-align: right;
+  flex: 1;
+  margin-left: 6px;
+}
+.donation-arrow {
+  width: 14px;
+  height: 14px;
+  color: var(--cream);
+  opacity: 0.55;
+  flex-shrink: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* MBWay copy-to-clipboard toast — slides over the row content when active */
+.donation-toast {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--navy-2);
+  color: var(--cream);
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.donation-link.is-copied .donation-toast {
+  opacity: 1;
+}
+.donation-link.is-copied .donation-label,
+.donation-link.is-copied .donation-value,
+.donation-link.is-copied .donation-arrow {
+  opacity: 0;
 }
 
 @media (max-width: 640px) {
