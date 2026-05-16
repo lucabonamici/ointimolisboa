@@ -1124,10 +1124,19 @@ a {
     max-width: 100%;
   }
 
-  /* Hide decorative doodles on phones — they're invisible (stroke-dashoffset)
-     and their container creates a large blank space on mobile */
+  /* Show doodles as static drawings on mobile — no scroll-draw animation */
   .about-doodles {
-    display: none;
+    min-height: 260px;
+  }
+
+  /* Reset the global stroke pre-hide so strokes are visible on mobile
+     (JS skips drawOnScroll on mobile, so these inline overrides won't fire) */
+  .doodle-lamp path,   .doodle-lamp line,   .doodle-lamp circle,   .doodle-lamp ellipse,
+  .doodle-guitar path, .doodle-guitar line, .doodle-guitar circle, .doodle-guitar ellipse,
+  .doodle-notes path,  .doodle-notes line,  .doodle-notes circle,  .doodle-notes ellipse,
+  .doodle-chair path,  .doodle-chair line,  .doodle-chair circle,  .doodle-chair ellipse {
+    stroke-dasharray: unset;
+    stroke-dashoffset: 0;
   }
 
   /* Keep guitar from being clipped */

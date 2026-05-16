@@ -352,11 +352,17 @@
     });
   };
 
-  drawOnScroll(".doodle-lamp",   { trigger: ".about", start: "top 75%", end: "center 40%", stagger: 0.05 });
-  drawOnScroll(".doodle-guitar", { trigger: ".about", start: "top 65%", end: "center 30%", stagger: 0.04 });
-  drawOnScroll(".doodle-notes",  { trigger: ".about", start: "top 55%", end: "center 20%", stagger: 0.06 });
+  /* On phones (<=480px) the CSS resets stroke-dashoffset to 0 so doodles
+     show as static drawings — skip the draw animation to avoid re-hiding them. */
+  const isPhone = window.innerWidth <= 480;
 
-  /* Doodle idle animations — start after draw completes */
+  if (!isPhone) {
+    drawOnScroll(".doodle-lamp",   { trigger: ".about", start: "top 75%", end: "center 40%", stagger: 0.05 });
+    drawOnScroll(".doodle-guitar", { trigger: ".about", start: "top 65%", end: "center 30%", stagger: 0.04 });
+    drawOnScroll(".doodle-notes",  { trigger: ".about", start: "top 55%", end: "center 20%", stagger: 0.06 });
+  }
+
+  /* Doodle idle animations — run on all screen sizes */
   ScrollTrigger.create({ trigger: ".doodle-lamp", start: "top 80%", once: true,
     onEnter: () => gsap.to(".doodle-lamp", { rotation: 3, transformOrigin: "70px 0px", duration: 3.6, repeat: -1, yoyo: true, ease: "sine.inOut" }),
   });
@@ -416,8 +422,10 @@
       }),
   });
 
-  /* Chair: draw on scroll */
-  drawOnScroll(".doodle-chair", { start: "top 95%", end: "top 45%", stagger: 0.04 });
+  /* Chair: draw on scroll (same guard — phones see it as a static drawing) */
+  if (!isPhone) {
+    drawOnScroll(".doodle-chair", { start: "top 95%", end: "top 45%", stagger: 0.04 });
+  }
   ScrollTrigger.create({ trigger: ".doodle-chair", start: "top 85%", once: true,
     onEnter: () => gsap.to(".doodle-chair", { y: -6, rotation: 1.5, transformOrigin: "center bottom", duration: 4.2, repeat: -1, yoyo: true, ease: "sine.inOut" }),
   });
