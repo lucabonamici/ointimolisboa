@@ -133,10 +133,14 @@
     yPercent: -10, opacity: 0.45, ease: "none",
     scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.6 },
   });
-  gsap.to(".hero-video", {
-    yPercent: 8, scale: 1.04, ease: "none",
-    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.6 },
-  });
+  /* Skip video parallax on mobile — the translate-center centering trick used there
+     would conflict with GSAP overwriting the transform. Desktop object-fit is fine. */
+  if (window.innerWidth > 640) {
+    gsap.to(".hero-video", {
+      yPercent: 8, scale: 1.04, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.6 },
+    });
+  }
 
   /* ── About: subtle slide only — no opacity gating ── */
   // Opacity is NOT touched here so text is always readable

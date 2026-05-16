@@ -219,8 +219,6 @@ a {
   transition: opacity 1.4s ease;
   pointer-events: none;
   z-index: 0;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 .hero-video.is-ready {
@@ -972,19 +970,21 @@ a {
     );
   }
 
-  /* Use JS --vh variable so the video matches the real visible height on iOS */
+  /* iOS Safari ignores object-fit on <video> — use translate-center trick instead.
+     min-width/min-height ensure the video is always at least as large as the hero,
+     translate(-50%,-50%) centres it. No object-fit needed. */
   .hero-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    height: auto;
+    min-width: 100%;
+    min-height: 100%;
+    max-width: none;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
 
   /* Fill full hero height so scroll-hint pins to the real bottom edge */
