@@ -301,6 +301,20 @@
     });
   });
 
+  /* Mobile tap-to-hear on the middle card (mem-2 = middle of 3) */
+  const tapCard = document.querySelector(".mem-2");
+  if (tapCard) {
+    const tapVid = tapCard.querySelector(".memory-video");
+    if (tapVid) {
+      tapCard.addEventListener("click", () => {
+        if (!window.matchMedia("(hover: hover)").matches) {
+          tapVid.muted = !tapVid.muted;
+          if (tapVid.paused) tapVid.play().catch(() => {});
+        }
+      });
+    }
+  }
+
   /* ── GSAP guard: if missing or reduced motion, all content stays visible ── */
   if (reduceMotion || typeof gsap === "undefined") return;
 

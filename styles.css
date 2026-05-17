@@ -602,6 +602,24 @@ a {
   border-radius: 1px;
 }
 
+.memory-hint {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(12px, 1.3vw, 15px);
+  color: #7a6545;
+  text-align: center;
+  margin: 5px 0 0;
+  line-height: 1.1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.memory-hint--mobile { display: none; }
+
+@media (max-width: 640px) {
+  .memory-hint--desktop { display: none; }
+  .memory-hint--mobile  { display: block; font-size: 13px; }
+}
+
 /* Per-card tilt + staggered pop-in delay */
 .mem-1 { --rot: -8deg;  transition-delay: 0s;    }
 .mem-2 { --rot:  5deg;  transition-delay: 0.10s; }
