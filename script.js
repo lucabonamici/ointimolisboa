@@ -254,35 +254,26 @@
     });
   });
 
-  /* ── Memory cards: reveal at scroll progress thresholds through
-        the Concept section. Pure CSS transitions handle the pop-in —
-        we just toggle the `.is-visible` class. No GSAP dependency,
-        so if anything fails the cards stay hidden and the text is
-        always readable. ── */
+  /* ── Memory strip: scroll-progress reveal so cards appear as the
+        user scrolls down into the strip and disappear when scrolling
+        back up. Each card has its own threshold for a staggered feel. ── */
   const memoryCards = document.querySelectorAll(".memory-card");
-  const aboutSection = document.querySelector(".about");
-  // Each card appears at a specific scroll progress through .about
-  // (0 = about just entering from bottom, 1 = about leaving from top).
-  // Thresholds are weighted toward the second half so the user can
-  // read the text before the memories start popping up.
-  const memoryThresholds = [0.5, 0.6, 0.68, 0.76, 0.85];
+  const memoriesStrip = document.querySelector(".memories-strip");
+  const memThresholds = [0.05, 0.15, 0.25, 0.35, 0.45];
 
-  function updateMemoryReveal() {
-    if (!aboutSection || !memoryCards.length) return;
-    const rect = aboutSection.getBoundingClientRect();
+  function updateMemories() {
+    if (!memoriesStrip || !memoryCards.length) return;
+    const rect = memoriesStrip.getBoundingClientRect();
     const vh = window.innerHeight;
-    const scrolled = vh - rect.top;
-    const total = vh + rect.height;
-    const progress = Math.max(0, Math.min(1, scrolled / total));
+    const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
     memoryCards.forEach((card, i) => {
-      const t = memoryThresholds[i] != null ? memoryThresholds[i] : 1;
-      card.classList.toggle("is-visible", progress >= t);
+      card.classList.toggle("is-visible", progress >= memThresholds[i]);
     });
   }
 
-  window.addEventListener("scroll", updateMemoryReveal, { passive: true });
-  window.addEventListener("resize", updateMemoryReveal, { passive: true });
-  updateMemoryReveal();
+  window.addEventListener("scroll", updateMemories, { passive: true });
+  window.addEventListener("resize", updateMemories, { passive: true });
+  updateMemories();
 
   /* Autoplay each memory video when it's visible on screen */
   if (memoryCards.length && "IntersectionObserver" in window) {
