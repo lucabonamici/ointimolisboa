@@ -254,6 +254,20 @@
     });
   });
 
+  /* ── Memory videos: autoplay when scrolled into view, pause when out ── */
+  const memoryCards = document.querySelectorAll(".memory-card");
+  if (memoryCards.length && "IntersectionObserver" in window) {
+    const vidObs = new IntersectionObserver((entries) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        const vid = target.querySelector(".memory-video");
+        if (!vid) return;
+        if (isIntersecting) vid.play().catch(() => {});
+        else { vid.pause(); vid.currentTime = 0; }
+      });
+    }, { threshold: 0.3 });
+    memoryCards.forEach((card) => vidObs.observe(card));
+  }
+
   /* ── GSAP guard: if missing or reduced motion, all content stays visible ── */
   if (reduceMotion || typeof gsap === "undefined") return;
 
@@ -391,6 +405,27 @@
   gsap.to(".doodle-lamp",   { yPercent: -22, ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: 0.8 } });
   gsap.to(".doodle-guitar", { yPercent:  16, ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: 0.8 } });
   gsap.to(".doodle-notes",  { yPercent: -10, xPercent: 5,  ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: 0.8 } });
+
+  /* ── Memories: cards pop in like polaroids being dropped ── */
+  if (document.querySelector(".memories-scatter")) {
+    gsap.from(".memory-card", {
+      opacity: 0,
+      scale: 0.88,
+      y: 36,
+      duration: 0.95,
+      ease: "back.out(1.4)",
+      stagger: 0.13,
+      clearProps: "all",
+      scrollTrigger: {
+        trigger: ".memories-scatter",
+        start: "top 82%",
+      },
+    });
+    gsap.from(".memories-title, .memories .eyebrow", {
+      y: 20, duration: 0.8, stagger: 0.08, ease: "power2.out",
+      scrollTrigger: { trigger: ".memories", start: "top 80%" },
+    });
+  }
 
   /* ── Event section: slide only ── */
   gsap.from(".event .eyebrow, .event h2", {

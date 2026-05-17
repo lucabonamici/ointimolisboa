@@ -534,6 +534,84 @@ a {
 }
 
 /* =========================================================
+   MEMORIES
+   ========================================================= */
+.memories {
+  position: relative;
+  padding: clamp(80px, 12vw, 140px) clamp(20px, 5vw, 56px);
+  background: linear-gradient(to bottom, var(--navy) 0%, var(--navy-3) 100%);
+  overflow: hidden;
+}
+
+.memories-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(36px, 5vw, 60px);
+  color: var(--cream);
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin: 0 0 clamp(48px, 7vw, 80px);
+  line-height: 1.1;
+}
+
+.memories-scatter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(18px, 3vw, 32px);
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.memory-card {
+  background: #f0e4c8;
+  padding: 8px 8px 36px;
+  border-radius: 2px;
+  box-shadow: 0 14px 56px rgba(0, 0, 0, 0.65), 0 3px 10px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+  width: clamp(130px, 18vw, 170px);
+  transform: rotate(var(--rot, 0deg)) translateY(var(--rise, 0px));
+  transition: transform 0.35s var(--ease-soft), box-shadow 0.35s ease;
+  position: relative;
+  z-index: 0;
+}
+
+.memory-card:hover {
+  transform: rotate(0deg) translateY(-10px) scale(1.05);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.72), 0 6px 20px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+.memory-card:nth-child(1) { --rot: -4deg;   --rise: 10px;  }
+.memory-card:nth-child(2) { --rot: 5.5deg;  --rise: -14px; }
+.memory-card:nth-child(3) { --rot: -1.5deg; --rise: 6px;   }
+.memory-card:nth-child(4) { --rot: 3deg;    --rise: -8px;  }
+.memory-card:nth-child(5) { --rot: -6deg;   --rise: 12px;  }
+
+.memory-card video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: 1px;
+}
+
+@media (max-width: 640px) {
+  .memories {
+    padding: 64px 16px 72px;
+  }
+  .memories-scatter {
+    gap: 14px;
+    max-width: 100%;
+  }
+  .memory-card {
+    width: calc(46% - 7px);
+    padding: 6px 6px 26px;
+  }
+}
+
+/* =========================================================
    EVENT
    ========================================================= */
 .event {
