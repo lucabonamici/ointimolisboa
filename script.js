@@ -61,6 +61,20 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
+  /* ── Load event data from event.json (admin-editable) ──
+     The HTML has fallback values so the page renders correctly even
+     if the fetch fails. We just overwrite each [data-event-field]. */
+  fetch("event.json", { cache: "no-cache" })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((data) => {
+      if (!data) return;
+      document.querySelectorAll("[data-event-field]").forEach((el) => {
+        const key = el.dataset.eventField;
+        if (data[key] != null) el.textContent = data[key];
+      });
+    })
+    .catch((err) => console.warn("event.json fetch failed:", err));
+
   /* ── Reservation modal ── */
   const reserveModal = document.getElementById("reserveModal");
   const reserveForm  = document.getElementById("reserveForm");

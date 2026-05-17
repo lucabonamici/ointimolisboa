@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>L'Intime — Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #1a2238;
+        --navy-2: #202a47;
+        --navy-3: #16203a;
+        --cream: #f7d7a2;
+        --cream-soft: #faecd0;
+        --cream-dim: #c9ad7e;
+        --ink: #0d1424;
+        --danger: #e8a98a;
+        --success: #a8d9b7;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        background: var(--navy);
+        color: var(--cream-soft);
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 300;
+        line-height: 1.5;
+        min-height: 100vh;
+        padding: 40px 20px;
+      }
+      .wrap {
+        max-width: 540px;
+        margin: 0 auto;
+      }
+      .brand {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 28px;
+        color: var(--cream);
+        margin: 0 0 4px;
+      }
+      .brand small {
+        display: block;
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: var(--cream-dim);
+        margin-top: 6px;
+      }
+      h1 {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 400;
+        font-size: 34px;
+        color: var(--cream);
+        margin: 32px 0 8px;
+      }
+      .lede {
+        font-size: 14px;
+        color: var(--cream-soft);
+        opacity: 0.78;
+        margin: 0 0 28px;
+      }
+
+      .panel {
+        background: var(--navy-2);
+        border: 1px solid rgba(247, 215, 162, 0.18);
+        border-radius: 4px;
+        padding: 28px 24px;
+        position: relative;
+      }
+      .panel + .panel { margin-top: 22px; }
+      .panel::before, .panel::after {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border: 1px solid var(--cream);
+        opacity: 0.5;
+        pointer-events: none;
+      }
+      .panel::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+      .panel::after  { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 18px;
+      }
+      .field-row {
+        display: flex;
+        gap: 14px;
+      }
+      .field-row .field { flex: 1; }
+      .field-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        color: var(--cream-dim);
+        margin-bottom: 6px;
+      }
+      input[type="text"], input[type="password"] {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(247, 215, 162, 0.25);
+        color: var(--cream-soft);
+        font-family: inherit;
+        font-size: 16px;
+        padding: 8px 0;
+        outline: none;
+        width: 100%;
+        font-weight: 300;
+        border-radius: 0;
+      }
+      input:focus { border-bottom-color: var(--cream); }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 8px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 24px;
+        background: transparent;
+        border: 1px solid var(--cream);
+        border-radius: 2px;
+        color: var(--cream);
+        font-family: inherit;
+        font-size: 12px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        cursor: pointer;
+        font-weight: 400;
+        min-width: 120px;
+        transition: background 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+      }
+      .btn:hover { background: var(--cream); color: var(--ink); }
+      .btn:disabled { cursor: not-allowed; opacity: 0.6; }
+      .btn-ghost {
+        border-color: rgba(247, 215, 162, 0.3);
+        color: var(--cream-soft);
+        opacity: 0.78;
+      }
+      .btn-ghost:hover {
+        background: transparent;
+        color: var(--cream);
+        border-color: var(--cream);
+        opacity: 1;
+      }
+
+      .status {
+        font-size: 13px;
+        margin-top: 14px;
+        min-height: 18px;
+      }
+      .status.ok    { color: var(--success); }
+      .status.err   { color: var(--danger); }
+
+      .help {
+        font-size: 12px;
+        color: var(--cream-dim);
+        line-height: 1.6;
+        margin: 12px 0 0;
+      }
+      .help a { color: var(--cream); text-decoration: underline; }
+      .help ol { margin: 8px 0 0; padding-left: 18px; }
+      .help li { margin: 4px 0; }
+
+      .preview-card {
+        margin-top: 18px;
+        padding: 18px 20px;
+        border: 1px solid rgba(247, 215, 162, 0.18);
+        border-radius: 2px;
+        background: rgba(247, 215, 162, 0.03);
+      }
+      .preview-card .date {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 36px;
+        color: var(--cream);
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .preview-card .month {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.32em;
+        color: var(--cream-dim);
+      }
+      .preview-card .artist {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 22px;
+        color: var(--cream);
+        margin: 14px 0 6px;
+      }
+      .preview-card .meta {
+        font-size: 13px;
+        color: var(--cream-soft);
+        margin: 2px 0;
+      }
+      .preview-card .meta strong { color: var(--cream); font-weight: 500; }
+
+      .top-right {
+        position: absolute;
+        top: 20px;
+        right: 24px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+      }
+      .top-right a { color: var(--cream-dim); }
+      .top-right a:hover { color: var(--cream); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="top-right"><a href="index.html">← View site</a></div>
+
+      <p class="brand">L'Intime <small>Admin</small></p>
+      <h1>Next event</h1>
+      <p class="lede">
+        Edit the event that appears on the main page. Saving commits a
+        new <code>event.json</code> to GitHub; the live site updates
+        within ~1 minute.
+      </p>
+
+      <!-- ============ AUTH PANEL ============ -->
+      <div class="panel" id="authPanel">
+        <p class="field-label">GitHub Personal Access Token</p>
+        <div class="field">
+          <input
+            type="password"
+            id="patInput"
+            autocomplete="off"
+            placeholder="github_pat_..."
+          />
+        </div>
+        <div class="actions">
+          <button class="btn" id="signInBtn">Sign in</button>
+        </div>
+        <p class="status err" id="authStatus"></p>
+        <p class="help">
+          You need a fine-grained token scoped to this repository.
+          <ol>
+            <li>Open
+              <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">
+                github.com/settings/personal-access-tokens/new
+              </a>
+            </li>
+            <li>Resource owner: your account &middot; Repository access: only <strong>ointimolisboa</strong></li>
+            <li>Permissions → Repository → <strong>Contents: Read and write</strong></li>
+            <li>Generate, copy the token, paste above.</li>
+          </ol>
+        </p>
+      </div>
+
+      <!-- ============ EDIT PANEL ============ -->
+      <div class="panel" id="editPanel" hidden>
+        <div class="actions" style="justify-content: flex-end; margin-bottom: 18px;">
+          <button class="btn btn-ghost" id="signOutBtn">Sign out</button>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <span class="field-label">Day</span>
+            <input type="text" id="f-day" placeholder="14" />
+          </div>
+          <div class="field">
+            <span class="field-label">Month</span>
+            <input type="text" id="f-month" placeholder="June" />
+          </div>
+          <div class="field">
+            <span class="field-label">Year</span>
+            <input type="text" id="f-year" placeholder="2026" />
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Artist / featuring</span>
+          <input type="text" id="f-artist" placeholder="Camille & the Lamps" />
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <span class="field-label">Doors open</span>
+            <input type="text" id="f-doors" placeholder="19:30" />
+          </div>
+          <div class="field">
+            <span class="field-label">Set begins</span>
+            <input type="text" id="f-set" placeholder="20:30" />
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Location label</span>
+          <input type="text" id="f-location" placeholder="The Living Room" />
+        </div>
+
+        <div class="field">
+          <span class="field-label">Address note (italic line)</span>
+          <input
+            type="text"
+            id="f-addressNote"
+            placeholder="address shared after booking"
+          />
+        </div>
+
+        <div class="field">
+          <span class="field-label">Seats handwritten note</span>
+          <input type="text" id="f-seats" placeholder="only 14 seats" />
+        </div>
+
+        <div class="actions">
+          <button class="btn" id="saveBtn">Save</button>
+        </div>
+        <p class="status" id="saveStatus"></p>
+
+        <div class="preview-card" id="preview">
+          <div class="date"><span id="p-day">14</span></div>
+          <div class="month"><span id="p-month">JUNE</span> · <span id="p-year">2026</span></div>
+          <div class="artist" id="p-artist">Camille & the Lamps</div>
+          <p class="meta">
+            Doors <strong id="p-doors">19:30</strong> ·
+            Set begins <strong id="p-set">20:30</strong>
+          </p>
+          <p class="meta">
+            <span id="p-location">The Living Room</span> ·
+            <em id="p-addressNote">address shared after booking</em>
+          </p>
+          <p class="meta">« <span id="p-seats">only 14 seats</span> »</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const REPO_OWNER = "lucabonamici";
+        const REPO_NAME  = "ointimolisboa";
+        const FILE_PATH  = "event.json";
+        const BRANCH     = "main";
+        const PAT_KEY    = "lintime_admin_pat";
+        const FIELDS = [
+          "day", "month", "year", "artist",
+          "doors", "set", "location", "addressNote", "seats",
+        ];
+
+        const $ = (id) => document.getElementById(id);
+        const authPanel  = $("authPanel");
+        const editPanel  = $("editPanel");
+        const patInput   = $("patInput");
+        const signInBtn  = $("signInBtn");
+        const signOutBtn = $("signOutBtn");
+        const saveBtn    = $("saveBtn");
+        const authStatus = $("authStatus");
+        const saveStatus = $("saveStatus");
+
+        let currentSha = null;
+
+        const getPat = () => localStorage.getItem(PAT_KEY);
+        const setPat = (v) => localStorage.setItem(PAT_KEY, v);
+        const clearPat = () => localStorage.removeItem(PAT_KEY);
+
+        function setStatus(el, msg, kind) {
+          el.textContent = msg;
+          el.className = "status" + (kind ? " " + kind : "");
+        }
+
+        function showEditor() {
+          authPanel.hidden = true;
+          editPanel.hidden = false;
+        }
+
+        function showAuth() {
+          authPanel.hidden = false;
+          editPanel.hidden = true;
+          patInput.value = "";
+        }
+
+        async function ghFetch(path, opts = {}) {
+          const pat = getPat();
+          if (!pat) throw new Error("Not signed in");
+          const res = await fetch(
+            "https://api.github.com" + path,
+            {
+              ...opts,
+              headers: {
+                Accept: "application/vnd.github+json",
+                Authorization: "Bearer " + pat,
+                "X-GitHub-Api-Version": "2022-11-28",
+                ...(opts.headers || {}),
+              },
+            }
+          );
+          return res;
+        }
+
+        async function loadEvent() {
+          setStatus(saveStatus, "Loading current event…", "");
+          try {
+            const res = await ghFetch(
+              `/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?ref=${BRANCH}`
+            );
+            if (res.status === 401) {
+              clearPat();
+              showAuth();
+              setStatus(authStatus, "Token invalid or expired. Sign in again.", "err");
+              return;
+            }
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            const meta = await res.json();
+            currentSha = meta.sha;
+            // GitHub returns base64-encoded content
+            const content = JSON.parse(
+              decodeURIComponent(escape(atob(meta.content.replace(/\n/g, ""))))
+            );
+            FIELDS.forEach((k) => { if (content[k] != null) $("f-" + k).value = content[k]; });
+            refreshPreview();
+            setStatus(saveStatus, "", "");
+          } catch (err) {
+            console.error(err);
+            setStatus(saveStatus, "Failed to load: " + err.message, "err");
+          }
+        }
+
+        function refreshPreview() {
+          FIELDS.forEach((k) => {
+            const v = $("f-" + k).value || "";
+            const p = $("p-" + k);
+            if (!p) return;
+            p.textContent = k === "month" ? v.toUpperCase() : v;
+          });
+        }
+
+        async function saveEvent() {
+          const payload = {};
+          FIELDS.forEach((k) => { payload[k] = $("f-" + k).value.trim(); });
+
+          const content = JSON.stringify(payload, null, 2) + "\n";
+          const encoded = btoa(unescape(encodeURIComponent(content)));
+
+          setStatus(saveStatus, "Saving…", "");
+          saveBtn.disabled = true;
+          try {
+            const res = await ghFetch(
+              `/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,
+              {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  message: "Update next event via admin (" + payload.artist + ")",
+                  content: encoded,
+                  sha: currentSha,
+                  branch: BRANCH,
+                }),
+              }
+            );
+            if (!res.ok) {
+              const data = await res.json().catch(() => ({}));
+              throw new Error(data.message || ("HTTP " + res.status));
+            }
+            const data = await res.json();
+            currentSha = data.content.sha;
+            setStatus(
+              saveStatus,
+              "Saved. The live site will update within ~1 minute.",
+              "ok"
+            );
+          } catch (err) {
+            console.error(err);
+            setStatus(saveStatus, "Save failed: " + err.message, "err");
+          } finally {
+            saveBtn.disabled = false;
+          }
+        }
+
+        // Wire up
+        signInBtn.addEventListener("click", () => {
+          const val = patInput.value.trim();
+          if (!val) {
+            setStatus(authStatus, "Paste a token first.", "err");
+            return;
+          }
+          setPat(val);
+          setStatus(authStatus, "", "");
+          showEditor();
+          loadEvent();
+        });
+
+        patInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") signInBtn.click();
+        });
+
+        signOutBtn.addEventListener("click", () => {
+          clearPat();
+          showAuth();
+        });
+
+        saveBtn.addEventListener("click", saveEvent);
+
+        FIELDS.forEach((k) => {
+          $("f-" + k).addEventListener("input", refreshPreview);
+        });
+
+        // Initial state
+        if (getPat()) {
+          showEditor();
+          loadEvent();
+        } else {
+          showAuth();
+        }
+      })();
+    </script>
+  </body>
+</html>
