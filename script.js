@@ -288,6 +288,19 @@
     memoryCards.forEach((card) => vidObs.observe(card));
   }
 
+  /* Hover: unmute video and play with sound on desktop */
+  memoryCards.forEach((card) => {
+    const vid = card.querySelector(".memory-video");
+    if (!vid) return;
+    card.addEventListener("mouseenter", () => {
+      vid.muted = false;
+      if (vid.paused) vid.play().catch(() => {});
+    });
+    card.addEventListener("mouseleave", () => {
+      vid.muted = true;
+    });
+  });
+
   /* ── GSAP guard: if missing or reduced motion, all content stays visible ── */
   if (reduceMotion || typeof gsap === "undefined") return;
 
