@@ -621,7 +621,7 @@ a {
 
 /* Desktop: hide mobile hint, show desktop hint */
 .memory-hint--mobile  { display: none; }
-.memory-hint--desktop { display: block; }
+.memory-hint--desktop { display: block; font-size: 17px; padding: 2px 4px 7px; }
 
 /* Mobile: hide desktop hint, show mobile hint */
 @media (max-width: 640px) {
