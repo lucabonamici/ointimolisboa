@@ -438,6 +438,15 @@
           });
         }
 
+        async function fetchLatestSha() {
+          const res = await ghFetch(
+            `/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?ref=${BRANCH}`
+          );
+          if (!res.ok) throw new Error("Couldn't fetch current file (HTTP " + res.status + ")");
+          const meta = await res.json();
+          return meta.sha;
+        }
+
         async function saveEvent() {
           const payload = {};
           FIELDS.forEach((k) => { payload[k] = $("f-" + k).value.trim(); });
@@ -448,6 +457,10 @@
           setStatus(saveStatus, "Saving…", "");
           saveBtn.disabled = true;
           try {
+            // Always fetch the latest SHA right before writing — avoids
+            // stale-SHA conflicts after a previous save or external commit.
+            currentSha = await fetchLatestSha();
+
             const res = await ghFetch(
               `/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,
               {
