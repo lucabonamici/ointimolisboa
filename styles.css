@@ -603,21 +603,28 @@ a {
 }
 
 .memory-hint {
+  position: absolute;
+  bottom: 7px;
+  left: 0;
+  right: 0;
   font-family: 'Caveat', cursive;
-  font-size: clamp(12px, 1.3vw, 15px);
+  font-size: 13px;
   color: #7a6545;
   text-align: center;
-  margin: 5px 0 0;
-  line-height: 1.1;
+  line-height: 1;
   pointer-events: none;
   user-select: none;
+  white-space: nowrap;
 }
 
-.memory-hint--mobile { display: none; }
+/* Desktop: hide mobile hint, show desktop hint */
+.memory-hint--mobile  { display: none; }
+.memory-hint--desktop { display: block; }
 
+/* Mobile: hide desktop hint, show mobile hint */
 @media (max-width: 640px) {
-  .memory-hint--desktop { display: none; }
-  .memory-hint--mobile  { display: block; font-size: 13px; }
+  .memory-hint--desktop { display: none !important; }
+  .memory-hint--mobile  { display: block !important; }
 }
 
 /* Per-card tilt + staggered pop-in delay */
