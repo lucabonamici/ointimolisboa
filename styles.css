@@ -547,20 +547,35 @@ a {
 
 .memory-card {
   position: absolute;
-  width: clamp(120px, 14vw, 175px);
+  width: clamp(110px, 12vw, 155px);
   background: #f0e4c8;
   padding: 7px 7px 30px;
   border-radius: 2px;
   box-shadow: 0 18px 60px rgba(0, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.4);
-  transform: rotate(var(--rot, 0deg));
   pointer-events: none;
   will-change: transform, opacity;
-  opacity: 0; /* GSAP reveals on scroll trigger */
+  /* Pre-hidden by default — if JS fails or stalls the cards stay
+     invisible so they can never cover the text. The `.is-visible`
+     class (added by script.js based on scroll progress through the
+     concept section) reveals them with a CSS-only transition. */
+  opacity: 0;
+  transform: rotate(var(--rot, 0deg)) scale(0.4);
+  transition: opacity 0.65s ease,
+              transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.memory-card.is-visible {
+  opacity: 1;
+  transform: rotate(var(--rot, 0deg)) scale(1);
 }
 
 /* If reduced motion, skip the pop-in and show cards directly */
 @media (prefers-reduced-motion: reduce) {
-  .memory-card { opacity: 1; }
+  .memory-card {
+    opacity: 1;
+    transform: rotate(var(--rot, 0deg)) scale(1);
+    transition: none;
+  }
 }
 
 .memory-card video {

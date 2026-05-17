@@ -254,8 +254,37 @@
     });
   });
 
-  /* ── Memory videos: autoplay when scrolled into view, pause when out ── */
+  /* ── Memory cards: reveal at scroll progress thresholds through
+        the Concept section. Pure CSS transitions handle the pop-in —
+        we just toggle the `.is-visible` class. No GSAP dependency,
+        so if anything fails the cards stay hidden and the text is
+        always readable. ── */
   const memoryCards = document.querySelectorAll(".memory-card");
+  const aboutSection = document.querySelector(".about");
+  // Each card appears at a specific scroll progress through .about
+  // (0 = about just entering from bottom, 1 = about leaving from top).
+  // Thresholds are weighted toward the second half so the user can
+  // read the text before the memories start popping up.
+  const memoryThresholds = [0.5, 0.6, 0.68, 0.76, 0.85];
+
+  function updateMemoryReveal() {
+    if (!aboutSection || !memoryCards.length) return;
+    const rect = aboutSection.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const scrolled = vh - rect.top;
+    const total = vh + rect.height;
+    const progress = Math.max(0, Math.min(1, scrolled / total));
+    memoryCards.forEach((card, i) => {
+      const t = memoryThresholds[i] != null ? memoryThresholds[i] : 1;
+      card.classList.toggle("is-visible", progress >= t);
+    });
+  }
+
+  window.addEventListener("scroll", updateMemoryReveal, { passive: true });
+  window.addEventListener("resize", updateMemoryReveal, { passive: true });
+  updateMemoryReveal();
+
+  /* Autoplay each memory video when it's visible on screen */
   if (memoryCards.length && "IntersectionObserver" in window) {
     const vidObs = new IntersectionObserver((entries) => {
       entries.forEach(({ target, isIntersecting }) => {
@@ -405,37 +434,6 @@
   gsap.to(".doodle-lamp",   { yPercent: -22, ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: 0.8 } });
   gsap.to(".doodle-guitar", { yPercent:  16, ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: 0.8 } });
   gsap.to(".doodle-notes",  { yPercent: -10, xPercent: 5,  ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: 0.8 } });
-
-  /* ── Memories pop up over the Concept section as user scrolls.
-        Each card has a unique trigger anchored to .about's scroll
-        progress, so cards pop in one at a time at staggered scroll
-        positions. They stay visible after pop-in.
-        CSS pre-hides via opacity: 0; fromTo without clearProps
-        leaves the inline opacity in place after the animation. ── */
-  const memoryTriggers = [
-    { sel: ".mem-1", start: "top 40%" },
-    { sel: ".mem-2", start: "center 80%" },
-    { sel: ".mem-3", start: "center 60%" },
-    { sel: ".mem-4", start: "center 40%" },
-    { sel: ".mem-5", start: "bottom 60%" },
-  ];
-  memoryTriggers.forEach(({ sel, start }) => {
-    if (!document.querySelector(sel)) return;
-    gsap.fromTo(
-      sel,
-      { opacity: 0, scale: 0.35 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.7,
-        ease: "back.out(2)",
-        scrollTrigger: {
-          trigger: ".about",
-          start,
-        },
-      }
-    );
-  });
 
   /* ── Event section: slide only ── */
   gsap.from(".event .eyebrow, .event h2", {
