@@ -406,26 +406,36 @@
   gsap.to(".doodle-guitar", { yPercent:  16, ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: 0.8 } });
   gsap.to(".doodle-notes",  { yPercent: -10, xPercent: 5,  ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: 0.8 } });
 
-  /* ── Memories: cards pop in like polaroids being dropped ── */
-  if (document.querySelector(".memories-scatter")) {
-    gsap.from(".memory-card", {
-      opacity: 0,
-      scale: 0.88,
-      y: 36,
-      duration: 0.95,
-      ease: "back.out(1.4)",
-      stagger: 0.13,
-      clearProps: "all",
-      scrollTrigger: {
-        trigger: ".memories-scatter",
-        start: "top 82%",
-      },
-    });
-    gsap.from(".memories-title, .memories .eyebrow", {
-      y: 20, duration: 0.8, stagger: 0.08, ease: "power2.out",
-      scrollTrigger: { trigger: ".memories", start: "top 80%" },
-    });
-  }
+  /* ── Memories pop up over the Concept section as user scrolls.
+        Each card has a unique trigger anchored to .about's scroll
+        progress, so cards pop in one at a time at staggered scroll
+        positions. They stay visible after pop-in.
+        CSS pre-hides via opacity: 0; fromTo without clearProps
+        leaves the inline opacity in place after the animation. ── */
+  const memoryTriggers = [
+    { sel: ".mem-1", start: "top 40%" },
+    { sel: ".mem-2", start: "center 80%" },
+    { sel: ".mem-3", start: "center 60%" },
+    { sel: ".mem-4", start: "center 40%" },
+    { sel: ".mem-5", start: "bottom 60%" },
+  ];
+  memoryTriggers.forEach(({ sel, start }) => {
+    if (!document.querySelector(sel)) return;
+    gsap.fromTo(
+      sel,
+      { opacity: 0, scale: 0.35 },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.7,
+        ease: "back.out(2)",
+        scrollTrigger: {
+          trigger: ".about",
+          start,
+        },
+      }
+    );
+  });
 
   /* ── Event section: slide only ── */
   gsap.from(".event .eyebrow, .event h2", {

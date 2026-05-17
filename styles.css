@@ -534,60 +534,34 @@ a {
 }
 
 /* =========================================================
-   MEMORIES
+   MEMORIES — polaroid videos that pop up over the Concept
+   section as the user scrolls toward Next Event.
    ========================================================= */
-.memories {
-  position: relative;
-  padding: clamp(80px, 12vw, 140px) clamp(20px, 5vw, 56px);
-  background: linear-gradient(to bottom, var(--navy) 0%, var(--navy-3) 100%);
+.about-memories {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
   overflow: hidden;
 }
 
-.memories-title {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(36px, 5vw, 60px);
-  color: var(--cream);
-  text-align: center;
-  letter-spacing: 0.02em;
-  margin: 0 0 clamp(48px, 7vw, 80px);
-  line-height: 1.1;
-}
-
-.memories-scatter {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: clamp(18px, 3vw, 32px);
-  max-width: 760px;
-  margin: 0 auto;
-}
-
 .memory-card {
+  position: absolute;
+  width: clamp(120px, 14vw, 175px);
   background: #f0e4c8;
-  padding: 8px 8px 36px;
+  padding: 7px 7px 30px;
   border-radius: 2px;
-  box-shadow: 0 14px 56px rgba(0, 0, 0, 0.65), 0 3px 10px rgba(0, 0, 0, 0.3);
-  flex-shrink: 0;
-  width: clamp(130px, 18vw, 170px);
-  transform: rotate(var(--rot, 0deg)) translateY(var(--rise, 0px));
-  transition: transform 0.35s var(--ease-soft), box-shadow 0.35s ease;
-  position: relative;
-  z-index: 0;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.4);
+  transform: rotate(var(--rot, 0deg));
+  pointer-events: none;
+  will-change: transform, opacity;
+  opacity: 0; /* GSAP reveals on scroll trigger */
 }
 
-.memory-card:hover {
-  transform: rotate(0deg) translateY(-10px) scale(1.05);
-  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.72), 0 6px 20px rgba(0, 0, 0, 0.4);
-  z-index: 2;
+/* If reduced motion, skip the pop-in and show cards directly */
+@media (prefers-reduced-motion: reduce) {
+  .memory-card { opacity: 1; }
 }
-
-.memory-card:nth-child(1) { --rot: -4deg;   --rise: 10px;  }
-.memory-card:nth-child(2) { --rot: 5.5deg;  --rise: -14px; }
-.memory-card:nth-child(3) { --rot: -1.5deg; --rise: 6px;   }
-.memory-card:nth-child(4) { --rot: 3deg;    --rise: -8px;  }
-.memory-card:nth-child(5) { --rot: -6deg;   --rise: 12px;  }
 
 .memory-card video {
   display: block;
@@ -597,18 +571,36 @@ a {
   border-radius: 1px;
 }
 
-@media (max-width: 640px) {
-  .memories {
-    padding: 64px 16px 72px;
-  }
-  .memories-scatter {
-    gap: 14px;
-    max-width: 100%;
-  }
+/* Scattered positions across the about section (desktop) */
+.mem-1 { top: 6%;  left: 3%;   --rot: -8deg; }
+.mem-2 { top: 10%; right: 6%;  --rot: 7deg;  }
+.mem-3 { top: 42%; left: 36%;  --rot: -3deg; }
+.mem-4 { top: 56%; left: 8%;   --rot: 5deg;  }
+.mem-5 { top: 64%; right: 4%;  --rot: -7deg; }
+
+/* Tablet: smaller cards, tweaked positions */
+@media (max-width: 860px) {
   .memory-card {
-    width: calc(46% - 7px);
-    padding: 6px 6px 26px;
+    width: clamp(100px, 22vw, 150px);
   }
+  .mem-1 { top: 4%;  left: 2%;  --rot: -8deg; }
+  .mem-2 { top: 8%;  right: 2%; --rot: 7deg;  }
+  .mem-3 { top: 38%; left: 34%; --rot: -3deg; }
+  .mem-4 { top: 60%; left: 4%;  --rot: 5deg;  }
+  .mem-5 { top: 74%; right: 4%; --rot: -7deg; }
+}
+
+/* Mobile: smaller cards, scattered through the taller stacked section */
+@media (max-width: 640px) {
+  .memory-card {
+    width: clamp(88px, 30vw, 130px);
+    padding: 5px 5px 22px;
+  }
+  .mem-1 { top: 3%;  left: 1%;   --rot: -8deg; }
+  .mem-2 { top: 14%; right: 1%;  --rot: 7deg;  }
+  .mem-3 { top: 40%; left: 30%;  --rot: -3deg; }
+  .mem-4 { top: 62%; left: 2%;   --rot: 5deg;  }
+  .mem-5 { top: 80%; right: 2%;  --rot: -7deg; }
 }
 
 /* =========================================================
