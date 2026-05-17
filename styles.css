@@ -1124,9 +1124,13 @@ a {
     max-width: 100%;
   }
 
-  /* Show doodles as static drawings on mobile — no scroll-draw animation */
+  /* Show doodles as static drawings on mobile — no scroll-draw animation.
+     width: 100% is needed because all children are position:absolute, so
+     the container has no flow content to size against in the grid cell. */
   .about-doodles {
-    min-height: 260px;
+    min-height: 190px;
+    width: 100%;
+    margin-top: 20px;
   }
 
   /* Reset the global stroke pre-hide so strokes are visible on mobile
@@ -1141,20 +1145,21 @@ a {
 
   /* Keep guitar from being clipped */
   .doodle-guitar {
-    top: 6%;
-    right: 2%;
-    width: 38%;
+    top: 4%;
+    right: 14%;
+    width: 22%;
   }
 
   .doodle-lamp {
-    width: 44%;
-    left: 2%;
+    width: 24%;
+    left: 14%;
+    top: 0;
   }
 
   .doodle-notes {
-    width: 60%;
-    left: 10%;
-    bottom: 0;
+    width: 34%;
+    left: 26%;
+    bottom: 6%;
   }
 
   /* --- Event --- */
