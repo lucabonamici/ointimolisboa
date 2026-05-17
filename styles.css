@@ -152,16 +152,17 @@ a {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(22, 32, 58, 0.97);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(16, 22, 42, 0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 40px;
+    gap: 0;
     z-index: 45;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.35s ease;
+    padding: 0 clamp(32px, 8vw, 64px);
   }
 
   .nav-links.is-open {
@@ -170,17 +171,35 @@ a {
   }
 
   .nav-links a {
-    font-size: 28px;
-    font-family: var(--serif);
-    letter-spacing: 0.08em;
-    text-transform: none;
-    opacity: 0.9;
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cream);
+    opacity: 0.7;
+    padding: 22px 0;
+    width: 100%;
+    text-align: center;
+    border-bottom: none;
+    border-top: 1px solid rgba(247, 215, 162, 0.1);
+    transition: opacity 0.2s ease, letter-spacing 0.2s ease;
+  }
+
+  .nav-links a:last-child {
+    border-bottom: 1px solid rgba(247, 215, 162, 0.1);
+  }
+
+  .nav-links a:hover,
+  .nav-links a:active {
+    opacity: 1;
+    letter-spacing: 0.36em;
     border-bottom: none;
   }
 
-  .nav-links a:hover {
-    opacity: 1;
-    border-bottom: none;
+  .nav-links a:last-child:hover,
+  .nav-links a:last-child:active {
+    border-bottom: 1px solid rgba(247, 215, 162, 0.1);
   }
 }
 
