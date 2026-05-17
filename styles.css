@@ -604,9 +604,12 @@ a {
 
 .memory-hint {
   position: absolute;
-  bottom: 7px;
+  bottom: 0;
   left: 0;
   right: 0;
+  /* same cream as card so it sits cleanly on the polaroid border */
+  background: #f0e4c8;
+  padding: 5px 4px 7px;
   font-family: 'Caveat', cursive;
   font-size: 13px;
   color: #7a6545;
@@ -651,7 +654,7 @@ a {
   }
   .memory-card {
     width: clamp(88px, 28vw, 120px);
-    padding: 5px 5px 22px;
+    padding: 5px 5px 30px;
   }
   .mem-4,
   .mem-5 { display: none; }
